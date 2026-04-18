@@ -3,24 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>For Blossom 🌸</title>
+    <title>Vault of Blossom 🌸</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Plus+Jakarta+Sans:wght@200;400;600;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Plus+Jakarta+Sans:wght@200;300;400;600;800&display=swap');
 
         :root {
-            --accent: oklch(78% 0.16 350);
-            --bg: oklch(8% 0.02 260);
-            --glass: oklch(100% 0 0 / 0.03);
+            --accent: oklch(75% 0.18 350);
+            --bg: oklch(10% 0.02 260);
+            --panel: oklch(100% 0 0 / 0.03);
             --border: oklch(100% 0 0 / 0.1);
-            --laser: oklch(78% 0.16 350 / 0.5);
+            --glow: oklch(75% 0.18 350 / 0.15);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-
+        
         body {
             height: 100vh;
-            background: var(--bg);
+            background-color: var(--bg);
             font-family: 'Plus Jakarta Sans', sans-serif;
             overflow: hidden;
             color: #fff;
@@ -28,7 +28,7 @@
             place-items: center;
         }
 
-        /* Neural Particle Canvas */
+        /* 1. Neural Particle System */
         #particle-canvas {
             position: fixed;
             inset: 0;
@@ -36,7 +36,7 @@
             pointer-events: none;
         }
 
-        /* Biometric Scanner Line */
+        /* 2. Biometric Laser */
         #scanner-line {
             position: fixed;
             top: -10px;
@@ -44,12 +44,21 @@
             width: 100%;
             height: 4px;
             background: var(--accent);
-            box-shadow: 0 0 20px var(--laser), 0 0 40px var(--laser);
+            box-shadow: 0 0 20px var(--accent), 0 0 40px var(--accent);
             z-index: 200;
             display: none;
         }
 
-        /* Overlays */
+        /* Sexy Cursor Spotlight */
+        #cursor-glow {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            background: radial-gradient(circle 250px at var(--x, 50%) var(--y, 50%), var(--glow), transparent 80%);
+        }
+
+        /* Overlays & Lock Screens */
         .overlay {
             position: fixed;
             inset: 0;
@@ -58,286 +67,246 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: 1.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .bento-lock {
-            background: var(--glass);
-            padding: 3.5rem;
+        .glass-card {
+            background: var(--panel);
+            padding: 3rem;
             border-radius: 48px;
             border: 1px solid var(--border);
-            backdrop-filter: blur(80px);
+            backdrop-filter: blur(60px);
             text-align: center;
-            z-index: 101;
+            box-shadow: 0 40px 100px -20px rgba(0,0,0,0.5);
+            position: relative;
+            width: min(92%, 500px);
+        }
+
+        .glass-card::before {
+            content: ""; position: absolute; inset: 0; padding: 1px; border-radius: 48px;
+            background: linear-gradient(135deg, var(--border), var(--accent), var(--border));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask-composite: exclude; opacity: 0.4;
         }
 
         input {
             all: unset;
             width: 220px;
             padding: 15px;
-            margin-top: 30px;
-            font-size: 3rem;
+            margin-top: 25px;
+            font-size: 3.5rem;
             letter-spacing: 15px;
-            border-bottom: 1px solid var(--border);
+            border-bottom: 2px solid var(--border);
             text-align: center;
             color: var(--accent);
             font-weight: 800;
         }
 
-        /* Main Experience Card */
-        .card {
-            width: min(92%, 520px);
-            padding: 3rem;
-            background: var(--glass);
-            backdrop-filter: blur(50px) saturate(200%);
-            border: 1px solid var(--border);
-            border-radius: 56px;
+        /* Main Content */
+        .main-container {
             z-index: 10;
-            position: relative;
-            transform: scale(0.9);
-            opacity: 0;
-            transition: all 1s ease;
+            display: none;
+            animation: cardEntrance 1s ease-out forwards;
         }
 
-        .card.active { transform: scale(1); opacity: 1; }
-
-        #text-display {
-            font-size: 1.5rem;
-            font-weight: 200;
-            min-height: 180px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
+        @keyframes cardEntrance {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        .cta-btn {
-            all: unset;
-            width: 100%;
-            padding: 1.2rem 0;
-            margin-top: 2rem;
-            background: #fff;
-            color: #000;
-            border-radius: 24px;
-            font-weight: 600;
-            cursor: pointer;
-            text-align: center;
-            transition: 0.3s;
+        #text-box { font-size: 1.5rem; font-weight: 200; min-height: 180px; display: flex; align-items: center; justify-content: center; text-wrap: balance; }
+
+        .btn {
+            all: unset; display: block; width: 100%; padding: 1.1rem 0; margin-top: 1.5rem;
+            background: #fff; color: #000; border-radius: 20px; font-weight: 600;
+            cursor: pointer; text-align: center; transition: 0.3s;
         }
+        .btn:hover { background: var(--accent); transform: translateY(-3px); }
 
-        .cta-btn:hover { background: var(--accent); transform: translateY(-3px); }
-
+        /* Board & Inputs */
         canvas#sig-pad {
             background: rgba(255, 255, 255, 0.95);
-            border-radius: 32px;
+            border-radius: 24px;
             width: 100%;
-            height: 200px;
+            height: 180px;
             margin: 20px 0;
             touch-action: none;
         }
 
         textarea {
-            width: 100%;
-            height: 100px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 15px;
-            color: #fff;
-            resize: none;
-            margin-bottom: 15px;
+            width: 100%; height: 100px; background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border); border-radius: 18px; padding: 15px;
+            color: #fff; font-family: inherit; resize: none; margin-top: 15px;
         }
 
+        .vault-box { background: rgba(0,0,0,0.2); border-radius: 24px; padding: 20px; margin-top: 20px; border: 1px solid var(--border); text-align: left; }
+        
+        @keyframes scan { from { top: 0%; opacity: 1; } to { top: 100%; opacity: 0; } }
         .hidden { display: none !important; }
-
-        @keyframes scan {
-            0% { top: 0%; opacity: 1; }
-            100% { top: 100%; opacity: 0; }
-        }
     </style>
 </head>
 <body>
 
     <canvas id="particle-canvas"></canvas>
+    <div id="cursor-glow"></div>
     <div id="scanner-line"></div>
 
-    <div id="lock1" class="overlay">
-        <div class="bento-lock">
-            <h2 id="greeting" style="font-weight: 200; font-size: 0.7rem; letter-spacing: 4px; color: var(--accent);">INITIALIZING...</h2>
-            <input type="password" id="code1" maxlength="4" placeholder="••••">
+    <div id="master-lock" class="overlay">
+        <div class="glass-card">
+            <h2 id="time-greet" style="font-size: 0.7rem; letter-spacing: 5px; color: var(--accent);">INITIALIZING...</h2>
+            <input type="password" id="pass-input" maxlength="4" placeholder="••••">
+            <p style="font-size: 0.6rem; margin-top: 15px; opacity: 0.4;">VAULT ACCESS REQUIRED</p>
         </div>
     </div>
 
-    <div id="lock2" class="overlay hidden">
-        <div class="bento-lock">
-            <h2 style="font-weight: 200; font-size: 0.7rem; letter-spacing: 4px;">DECRYPTING MESSAGE</h2>
-            <input type="password" id="code2" maxlength="4" placeholder="••••">
-            <p onclick="document.getElementById('lock2').classList.add('hidden')" style="margin-top: 15px; font-size: 0.6rem; cursor: pointer; opacity: 0.5;">CANCEL</p>
-        </div>
-    </div>
+    <audio id="bg-track" loop><source src="https://cdn.pixabay.com/audio/2022/05/27/audio_1808f3030c.mp3" type="audio/mpeg"></audio>
 
-    <audio id="bg-track" loop>
-        <source src="https://cdn.pixabay.com/audio/2022/05/27/audio_1808f3030c.mp3" type="audio/mpeg">
-    </audio>
-
-    <div class="card" id="main-card">
-        <div id="text-display">Verification Pending...</div>
-        <button id="start-btn" class="cta-btn">Begin Journey</button>
-
-        <div id="interactive-zones" class="hidden">
-            <canvas id="sig-pad"></canvas>
-            <textarea id="reply-text" placeholder="Type a message back..."></textarea>
-            <button id="send-reply" class="cta-btn" style="background: var(--accent);">Synchronize ❤️</button>
+    <div class="main-container" id="vault-blossom">
+        <div class="glass-card">
+            <div id="text-box">Identity Confirmed. Ready to start?</div>
+            <button id="start-btn" class="btn">Initiate Sequence</button>
             
-            <div id="reply-view-section" class="hidden">
-                <button id="view-reply-btn" class="cta-btn" style="background: transparent; border: 1px solid var(--border); color: #fff;">View Stored Reply 🔒</button>
-                <div id="reply-display" class="hidden" style="margin-top: 20px; font-style: italic; border-top: 1px solid var(--border); padding-top: 20px;"></div>
+            <div id="blossom-controls" class="hidden">
+                <p style="font-size: 0.7rem; letter-spacing: 2px; color: var(--accent); margin-top: 20px;">SEAL OF FRIENDSHIP</p>
+                <canvas id="sig-pad"></canvas>
+                <textarea id="reply-to-you" placeholder="Write your message back to him here..."></textarea>
+                <button onclick="save('blossom_reply', 'reply-to-you')" class="btn" style="background: var(--accent);">Synchronize Data ❤️</button>
             </div>
         </div>
     </div>
 
+    <div class="main-container" id="vault-deep">
+        <div class="glass-card">
+            <h2 style="font-family: 'Dancing Script'; font-size: 2.5rem; color: var(--accent);">Obsidian Dashboard</h2>
+            
+            <div class="vault-box">
+                <p style="font-size: 0.6rem; color: var(--accent); letter-spacing: 2px;">HER DECRYPTED REPLY</p>
+                <p id="her-reply-text" style="margin-top: 10px; font-style: italic; opacity: 0.8;">(Waiting for synchronization...)</p>
+            </div>
+
+            <div class="vault-box">
+                <p style="font-size: 0.6rem; color: var(--accent); letter-spacing: 2px;">YOUR PRIVATE VAULT NOTE</p>
+                <textarea id="deep-note-input" placeholder="Something only 2026 reveals..."></textarea>
+                <button onclick="save('deep_note', 'deep-note-input')" class="btn" style="background: var(--accent);">Secure Update</button>
+            </div>
+
+            <button onclick="location.reload()" class="btn" style="background: transparent; border: 1px solid var(--border); color: #fff; font-size: 0.8rem;">Close Vault</button>
+        </div>
+    </div>
+
     <script>
-        const pCanvas = document.getElementById('particle-canvas');
-        const pCtx = pCanvas.getContext('2d');
+        const input = document.getElementById('pass-input');
+        const lock = document.getElementById('master-lock');
         const scanner = document.getElementById('scanner-line');
-        const code1 = document.getElementById('code1');
-        const card = document.getElementById('main-card');
-        const display = document.getElementById('text-display');
         const music = document.getElementById('bg-track');
 
         // 1. Time-Aware Greeting
         const hour = new Date().getHours();
-        const greetText = hour < 12 ? "GOOD MORNING, BLOSSOM" : hour < 18 ? "GOOD AFTERNOON, BLOSSOM" : "GOOD EVENING, BLOSSOM";
-        document.getElementById('greeting').innerText = greetText;
+        document.getElementById('time-greet').innerText = hour < 12 ? "GOOD MORNING, BLOSSOM" : hour < 18 ? "GOOD AFTERNOON, BLOSSOM" : "GOOD EVENING, BLOSSOM";
 
         // 2. Neural Particle System
+        const pCanvas = document.getElementById('particle-canvas');
+        const pCtx = pCanvas.getContext('2d');
         let particles = [];
-        function initParticles() {
-            pCanvas.width = window.innerWidth;
-            pCanvas.height = window.innerHeight;
-            for(let i=0; i<60; i++) {
-                particles.push({
-                    x: Math.random() * pCanvas.width,
-                    y: Math.random() * pCanvas.height,
-                    vx: (Math.random() - 0.5) * 0.5,
-                    vy: (Math.random() - 0.5) * 0.5,
-                    size: Math.random() * 2
-                });
-            }
+        function initP() {
+            pCanvas.width = window.innerWidth; pCanvas.height = window.innerHeight;
+            for(let i=0; i<50; i++) particles.push({ x: Math.random()*pCanvas.width, y: Math.random()*pCanvas.height, vx: (Math.random()-0.5)*0.3, vy: (Math.random()-0.5)*0.3 });
         }
-        function drawParticles() {
+        function drawP() {
             pCtx.clearRect(0,0,pCanvas.width, pCanvas.height);
-            pCtx.fillStyle = "rgba(255,255,255,0.2)";
+            pCtx.fillStyle = "rgba(255,255,255,0.15)";
             particles.forEach(p => {
                 p.x += p.vx; p.y += p.vy;
-                if(p.x < 0 || p.x > pCanvas.width) p.vx *= -1;
-                if(p.y < 0 || p.y > pCanvas.height) p.vy *= -1;
-                pCtx.beginPath();
-                pCtx.arc(p.x, p.y, p.size, 0, Math.PI*2);
-                pCtx.fill();
+                if(p.x<0 || p.x>pCanvas.width) p.vx*=-1; if(p.y<0 || p.y>pCanvas.height) p.vy*=-1;
+                pCtx.beginPath(); pCtx.arc(p.x, p.y, 1, 0, Math.PI*2); pCtx.fill();
             });
-            requestAnimationFrame(drawParticles);
+            requestAnimationFrame(drawP);
         }
-        initParticles(); drawParticles();
+        initP(); drawP();
 
-        // 3. Biometric Entrance (2025)
-        code1.addEventListener('input', (e) => {
-            if (e.target.value === '2025') {
-                code1.blur();
+        // 3. Cursor Tracking
+        window.addEventListener('mousemove', e => {
+            document.getElementById('cursor-glow').style.setProperty('--x', `${e.clientX}px`);
+            document.getElementById('cursor-glow').style.setProperty('--y', `${e.clientY}px`);
+        });
+
+        // 4. Master Entrance
+        input.addEventListener('input', (e) => {
+            const val = e.target.value;
+            if (val === '2025' || val === '2026') {
+                input.blur();
                 scanner.style.display = 'block';
-                scanner.style.animation = 'scan 1.5s forwards';
+                scanner.style.animation = 'scan 1.2s forwards';
                 
                 setTimeout(() => {
-                    document.getElementById('lock1').style.opacity = '0';
+                    lock.style.opacity = '0';
                     setTimeout(() => {
-                        document.getElementById('lock1').classList.add('hidden');
-                        card.classList.add('active');
-                        display.innerText = "Identity Verified. System Online.";
+                        lock.style.display = 'none';
+                        if(val === '2025') {
+                            document.getElementById('vault-blossom').style.display = 'block';
+                        } else {
+                            document.getElementById('vault-deep').style.display = 'block';
+                            loadVaultData();
+                        }
+                        confetti({ particleCount: 100, spread: 70 });
                     }, 800);
-                }, 1500);
+                }, 1200);
             }
         });
 
-        // 4. Story Logic
-        const story = [
-            "Hi Blossom...",
-            "Checking the system logs...",
-            "Found: One incredible person.",
-            "In this fast world, you are my favorite highlight.",
-            "Thank you for being you. 🌸"
-        ];
-        
+        // 5. Story Logic (2025)
+        const story = ["Hi Blossom...", "They say digital spaces are cold,", "But this one is warm because you're in it.", "You're a real gem. Thank you for being you. 🌸"];
         let sIdx = 0;
-        function runStory() {
-            if(sIdx < story.length) {
-                display.style.opacity = 0;
-                setTimeout(() => {
-                    display.innerText = story[sIdx];
-                    display.style.opacity = 1;
-                    sIdx++;
-                    setTimeout(runStory, 3500);
-                }, 800);
-            } else {
-                showInteractive();
-            }
-        }
-
         document.getElementById('start-btn').onclick = () => {
-            document.getElementById('start-btn').classList.add('hidden');
-            music.volume = 0.3; music.play();
-            runStory();
+            document.getElementById('start-btn').style.display = 'none';
+            music.volume = 0.2; music.play();
+            const interval = setInterval(() => {
+                if(sIdx < story.length) {
+                    const box = document.getElementById('text-box');
+                    box.style.opacity = 0;
+                    setTimeout(() => {
+                        box.innerText = story[sIdx];
+                        box.style.opacity = 1;
+                        sIdx++;
+                    }, 500);
+                } else {
+                    clearInterval(interval);
+                    document.getElementById('text-box').innerHTML = "<span style='font-family:Dancing Script; font-size:2.8rem; color:var(--accent)'>Over to you!</span>";
+                    document.getElementById('blossom-controls').classList.remove('hidden');
+                    initSig();
+                }
+            }, 3500);
         };
 
-        // 5. Signature & Reply System
-        const sigPad = document.getElementById('sig-pad');
-        const sCtx = sigPad.getContext('2d');
-        function showInteractive() {
-            confetti({ particleCount: 150, spread: 70 });
-            display.innerText = "Grateful For You!";
-            display.style.fontFamily = "'Dancing Script', cursive";
-            display.style.fontSize = "2.5rem";
-            document.getElementById('interactive-zones').classList.remove('hidden');
-            sigPad.width = sigPad.offsetWidth;
-            sigPad.height = sigPad.offsetHeight;
-            if(localStorage.getItem('blossom_reply')) document.getElementById('reply-view-section').classList.remove('hidden');
+        // 6. Signature Pad Logic
+        function initSig() {
+            const pad = document.getElementById('sig-pad');
+            const sCtx = pad.getContext('2d');
+            pad.width = pad.offsetWidth; pad.height = pad.offsetHeight;
+            let draw = false;
+            const getXY = (e) => {
+                const r = pad.getBoundingClientRect();
+                return { x: (e.clientX || e.touches[0].clientX) - r.left, y: (e.clientY || e.touches[0].clientY) - r.top };
+            };
+            pad.onmousedown = pad.ontouchstart = (e) => { draw = true; sCtx.beginPath(); const p = getXY(e); sCtx.moveTo(p.x, p.y); };
+            pad.onmousemove = pad.ontouchmove = (e) => { if(draw) { const p = getXY(e); sCtx.lineTo(p.x, p.y); sCtx.strokeStyle="#000"; sCtx.lineWidth=3; sCtx.stroke(); } };
+            window.onmouseup = window.ontouchend = () => draw = false;
         }
 
-        let drawing = false;
-        sigPad.onmousedown = sigPad.ontouchstart = (e) => {
-            drawing = true; sCtx.beginPath();
-            const r = sigPad.getBoundingClientRect();
-            const x = (e.clientX || e.touches[0].clientX) - r.left;
-            const y = (e.clientY || e.touches[0].clientY) - r.top;
-            sCtx.moveTo(x, y);
-        };
-        sigPad.onmousemove = sigPad.ontouchmove = (e) => {
-            if(!drawing) return;
-            const r = sigPad.getBoundingClientRect();
-            const x = (e.clientX || e.touches[0].clientX) - r.left;
-            const y = (e.clientY || e.touches[0].clientY) - r.top;
-            sCtx.lineTo(x, y); sCtx.strokeStyle = "#000"; sCtx.lineWidth = 3; sCtx.stroke();
-        };
-        window.onmouseup = window.ontouchend = () => drawing = false;
+        // 7. Data Handling
+        function save(key, id) {
+            localStorage.setItem(key, document.getElementById(id).value);
+            if(key === 'blossom_reply') localStorage.setItem('blossom_sig', document.getElementById('sig-pad').toDataURL());
+            confetti({ particleCount: 50, origin: { y: 0.8 } });
+            alert("Vault Synchronized. ✨");
+        }
 
-        document.getElementById('send-reply').onclick = () => {
-            localStorage.setItem('blossom_reply', document.getElementById('reply-text').value);
-            alert("Data Synced. ❤️");
-            location.reload();
-        };
-
-        // View Reply (2026)
-        document.getElementById('view-reply-btn').onclick = () => {
-            document.getElementById('lock2').classList.remove('hidden');
-        };
-        document.getElementById('code2').addEventListener('input', (e) => {
-            if(e.target.value === '2026') {
-                document.getElementById('lock2').classList.add('hidden');
-                document.getElementById('view-reply-btn').classList.add('hidden');
-                document.getElementById('reply-display').classList.remove('hidden');
-                document.getElementById('reply-display').innerText = localStorage.getItem('blossom_reply');
-            }
-        });
+        function loadVaultData() {
+            const reply = localStorage.getItem('blossom_reply');
+            if(reply) document.getElementById('her-reply-text').innerText = `"${reply}"`;
+            const deep = localStorage.getItem('deep_note');
+            if(deep) document.getElementById('deep-note-input').value = deep;
+        }
     </script>
 </body>
 </html>
