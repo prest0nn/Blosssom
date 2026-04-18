@@ -3,310 +3,552 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Vault of Blossom 🌸</title>
+    <title>The Obsidian Vault | For Blossom 🌸</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Plus+Jakarta+Sans:wght@200;300;400;600;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Plus+Jakarta+Sans:wght@200;300;400;500;600;800&display=swap');
 
+        /* PREMIUM DESIGN SYSTEM (2026)
+           Using OKLCH for superior color depth and vibrancy
+        */
         :root {
-            --accent: oklch(75% 0.18 350);
-            --bg: oklch(10% 0.02 260);
-            --panel: oklch(100% 0 0 / 0.03);
-            --border: oklch(100% 0 0 / 0.1);
-            --glow: oklch(75% 0.18 350 / 0.15);
+            --accent-primary: oklch(75% 0.18 350);
+            --accent-secondary: oklch(65% 0.25 330);
+            --bg-deep: oklch(8% 0.02 260);
+            --bg-surface: oklch(12% 0.03 260);
+            --glass-core: oklch(100% 0 0 / 0.03);
+            --glass-stroke: oklch(100% 0 0 / 0.12);
+            --text-main: oklch(98% 0.01 260);
+            --text-dim: oklch(65% 0.02 260);
+            --error: oklch(60% 0.2 25);
+            --success: oklch(75% 0.15 150);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        
+        /* RESET & BASE STYLES */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+        }
+
         body {
-            height: 100vh;
-            background-color: var(--bg);
+            height: 100dvh;
+            background-color: var(--bg-deep);
             font-family: 'Plus Jakarta Sans', sans-serif;
             overflow: hidden;
-            color: #fff;
-            display: grid;
-            place-items: center;
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 1000px;
         }
 
-        /* 1. Neural Particle System */
-        #particle-canvas {
-            position: fixed;
-            inset: 0;
-            z-index: 0;
-            pointer-events: none;
-        }
-
-        /* 2. Biometric Laser */
-        #scanner-line {
-            position: fixed;
-            top: -10px;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: var(--accent);
-            box-shadow: 0 0 20px var(--accent), 0 0 40px var(--accent);
-            z-index: 200;
-            display: none;
-        }
-
-        /* Sexy Cursor Spotlight */
-        #cursor-glow {
+        /* BACKGROUND ENGINE LAYER */
+        #particle-engine {
             position: fixed;
             inset: 0;
             z-index: 1;
             pointer-events: none;
-            background: radial-gradient(circle 250px at var(--x, 50%) var(--y, 50%), var(--glow), transparent 80%);
         }
 
-        /* Overlays & Lock Screens */
-        .overlay {
+        #dynamic-spotlight {
             position: fixed;
             inset: 0;
-            background: var(--bg);
-            z-index: 100;
+            z-index: 2;
+            pointer-events: none;
+            background: radial-gradient(
+                circle 300px at var(--mouse-x, 50%) var(--mouse-y, 50%),
+                oklch(75% 0.18 350 / 0.08),
+                transparent 80%
+            );
+        }
+
+        /* BIOMETRIC SCANNER OVERLAY */
+        #biometric-scanner {
+            position: fixed;
+            top: -5px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--accent-primary);
+            z-index: 999;
+            box-shadow: 0 0 15px var(--accent-primary), 0 0 30px var(--accent-primary);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* LOCK SCREEN INTERFACE 
+           Z-Index set high to prevent background blocking
+        */
+        .access-overlay {
+            position: fixed;
+            inset: 0;
+            background: var(--bg-deep);
+            z-index: 800;
             display: flex;
             justify-content: center;
             align-items: center;
-            transition: 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: transform 1.2s cubic-bezier(0.85, 0, 0.15, 1), opacity 0.8s ease;
         }
 
-        .glass-card {
-            background: var(--panel);
-            padding: 3rem;
-            border-radius: 48px;
-            border: 1px solid var(--border);
-            backdrop-filter: blur(60px);
+        .auth-card {
+            background: var(--glass-core);
+            backdrop-filter: blur(80px) saturate(180%);
+            padding: 4rem 3rem;
+            border-radius: 60px;
+            border: 1px solid var(--glass-stroke);
             text-align: center;
-            box-shadow: 0 40px 100px -20px rgba(0,0,0,0.5);
+            width: min(90%, 460px);
             position: relative;
-            width: min(92%, 500px);
+            box-shadow: 0 50px 100px -20px rgba(0,0,0,0.7);
         }
 
-        .glass-card::before {
-            content: ""; position: absolute; inset: 0; padding: 1px; border-radius: 48px;
-            background: linear-gradient(135deg, var(--border), var(--accent), var(--border));
+        .auth-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 60px;
+            padding: 1px;
+            background: linear-gradient(135deg, var(--glass-stroke), var(--accent-primary), var(--glass-stroke));
             -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            mask-composite: exclude; opacity: 0.4;
+            mask-composite: exclude;
+            pointer-events: none;
         }
 
-        input {
+        .status-label {
+            font-size: 0.65rem;
+            letter-spacing: 6px;
+            color: var(--accent-primary);
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            display: block;
+        }
+
+        .passcode-input {
             all: unset;
-            width: 220px;
-            padding: 15px;
-            margin-top: 25px;
-            font-size: 3.5rem;
-            letter-spacing: 15px;
-            border-bottom: 2px solid var(--border);
-            text-align: center;
-            color: var(--accent);
-            font-weight: 800;
-        }
-
-        /* Main Content */
-        .main-container {
-            z-index: 10;
-            display: none;
-            animation: cardEntrance 1s ease-out forwards;
-        }
-
-        @keyframes cardEntrance {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        #text-box { font-size: 1.5rem; font-weight: 200; min-height: 180px; display: flex; align-items: center; justify-content: center; text-wrap: balance; }
-
-        .btn {
-            all: unset; display: block; width: 100%; padding: 1.1rem 0; margin-top: 1.5rem;
-            background: #fff; color: #000; border-radius: 20px; font-weight: 600;
-            cursor: pointer; text-align: center; transition: 0.3s;
-        }
-        .btn:hover { background: var(--accent); transform: translateY(-3px); }
-
-        /* Board & Inputs */
-        canvas#sig-pad {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 24px;
             width: 100%;
-            height: 180px;
-            margin: 20px 0;
+            font-size: 4rem;
+            letter-spacing: 24px;
+            text-align: center;
+            color: var(--text-main);
+            font-weight: 800;
+            border-bottom: 2px solid var(--glass-stroke);
+            padding-bottom: 10px;
+            transition: border-color 0.4s ease;
+            cursor: text;
+        }
+
+        .passcode-input:focus {
+            border-color: var(--accent-primary);
+        }
+
+        /* MAIN VAULT ARCHITECTURE
+        */
+        .vault-container {
+            position: relative;
+            z-index: 100;
+            width: min(94%, 540px);
+            display: none;
+            opacity: 0;
+            transform: translateY(20px) scale(0.98);
+            transition: all 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        .vault-container.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        .glass-module {
+            background: var(--glass-core);
+            backdrop-filter: blur(40px);
+            border-radius: 44px;
+            border: 1px solid var(--glass-stroke);
+            padding: 2.5rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        #narrative-engine {
+            font-size: 1.6rem;
+            font-weight: 300;
+            line-height: 1.5;
+            min-height: 220px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: var(--text-main);
+            transition: opacity 0.6s ease;
+        }
+
+        /* SIGNATURE ENGINE */
+        .signature-module {
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        canvas#signature-pad {
+            background: #ffffff;
+            border-radius: 28px;
+            width: 100%;
+            height: 200px;
+            margin: 1.5rem 0;
+            cursor: crosshair;
             touch-action: none;
         }
 
-        textarea {
-            width: 100%; height: 100px; background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--border); border-radius: 18px; padding: 15px;
-            color: #fff; font-family: inherit; resize: none; margin-top: 15px;
+        /* DATA INPUTS */
+        .premium-textarea {
+            width: 100%;
+            height: 120px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-stroke);
+            border-radius: 24px;
+            padding: 1.2rem;
+            color: #fff;
+            font-family: inherit;
+            resize: none;
+            outline: none;
+            transition: 0.3s;
         }
 
-        .vault-box { background: rgba(0,0,0,0.2); border-radius: 24px; padding: 20px; margin-top: 20px; border: 1px solid var(--border); text-align: left; }
-        
-        @keyframes scan { from { top: 0%; opacity: 1; } to { top: 100%; opacity: 0; } }
+        .premium-textarea:focus {
+            border-color: var(--accent-primary);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        /* ACTION BUTTONS */
+        .action-btn {
+            all: unset;
+            display: block;
+            width: 100%;
+            padding: 1.2rem 0;
+            background: #fff;
+            color: #000;
+            border-radius: 22px;
+            font-weight: 700;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            margin-top: 1rem;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-4px);
+            background: var(--accent-primary);
+            box-shadow: 0 20px 40px oklch(75% 0.18 350 / 0.25);
+        }
+
+        .action-btn.secondary {
+            background: transparent;
+            color: #fff;
+            border: 1px solid var(--glass-stroke);
+        }
+
+        /* 2026 BENTO DASHBOARD STYLES */
+        .bento-grid {
+            display: grid;
+            gap: 1.5rem;
+            text-align: left;
+        }
+
+        .bento-item {
+            background: rgba(0, 0, 0, 0.25);
+            border-radius: 30px;
+            padding: 20px;
+            border: 1px solid var(--glass-stroke);
+        }
+
+        .label-mini {
+            font-size: 0.6rem;
+            color: var(--accent-primary);
+            letter-spacing: 3px;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        /* UTILITIES */
         .hidden { display: none !important; }
+        .blossom-script { font-family: 'Dancing Script', cursive; font-size: 3rem; color: var(--accent-primary); }
+
+        @keyframes laser-scan {
+            0% { top: 0%; opacity: 1; }
+            50% { opacity: 1; }
+            100% { top: 100%; opacity: 0; }
+        }
+
+        @keyframes haptic-shake {
+            0%, 100% { transform: translate(0,0); }
+            25% { transform: translate(-2px, 2px); }
+            75% { transform: translate(2px, -2px); }
+        }
+
+        .shake { animation: haptic-shake 0.1s infinite; }
     </style>
 </head>
 <body>
 
-    <canvas id="particle-canvas"></canvas>
-    <div id="cursor-glow"></div>
-    <div id="scanner-line"></div>
+    <canvas id="particle-engine"></canvas>
+    <div id="dynamic-spotlight"></div>
+    <div id="biometric-scanner"></div>
 
-    <div id="master-lock" class="overlay">
-        <div class="glass-card">
-            <h2 id="time-greet" style="font-size: 0.7rem; letter-spacing: 5px; color: var(--accent);">INITIALIZING...</h2>
-            <input type="password" id="pass-input" maxlength="4" placeholder="••••">
-            <p style="font-size: 0.6rem; margin-top: 15px; opacity: 0.4;">VAULT ACCESS REQUIRED</p>
+    <div class="access-overlay" id="master-auth">
+        <div class="auth-card" id="auth-panel">
+            <span id="greeting-label" class="status-label">System Initializing</span>
+            <input type="password" class="passcode-input" id="vault-key" maxlength="4" placeholder="••••" inputmode="numeric" autofocus>
+            <p style="font-size: 0.6rem; margin-top: 2rem; opacity: 0.4; letter-spacing: 2px;">SECURE HANDSHAKE REQUIRED</p>
         </div>
     </div>
 
-    <audio id="bg-track" loop><source src="https://cdn.pixabay.com/audio/2022/05/27/audio_1808f3030c.mp3" type="audio/mpeg"></audio>
+    <audio id="ambient-audio" loop>
+        <source src="https://cdn.pixabay.com/audio/2022/05/27/audio_1808f3030c.mp3" type="audio/mpeg">
+    </audio>
 
-    <div class="main-container" id="vault-blossom">
-        <div class="glass-card">
-            <div id="text-box">Identity Confirmed. Ready to start?</div>
-            <button id="start-btn" class="btn">Initiate Sequence</button>
+    <div class="vault-container" id="vault-primary">
+        <div class="glass-module">
+            <div id="narrative-engine">Handshake Protocol Accepted. <br>Welcome, Blossom.</div>
+            <button class="action-btn" id="trigger-narrative">Initialize Sequence</button>
             
-            <div id="blossom-controls" class="hidden">
-                <p style="font-size: 0.7rem; letter-spacing: 2px; color: var(--accent); margin-top: 20px;">SEAL OF FRIENDSHIP</p>
-                <canvas id="sig-pad"></canvas>
-                <textarea id="reply-to-you" placeholder="Write your message back to him here..."></textarea>
-                <button onclick="save('blossom_reply', 'reply-to-you')" class="btn" style="background: var(--accent);">Synchronize Data ❤️</button>
+            <div id="post-narrative-ui" class="hidden">
+                <div class="signature-module">
+                    <span class="label-mini">Digital Seal</span>
+                    <canvas id="signature-pad"></canvas>
+                </div>
+                <textarea class="premium-textarea" id="blossom-response" placeholder="Type your synchronization message..."></textarea>
+                <button class="action-btn" style="background: var(--accent-primary);" onclick="handleSync('blossom_reply', 'blossom-response')">Commit to Vault ❤️</button>
             </div>
         </div>
     </div>
 
-    <div class="main-container" id="vault-deep">
-        <div class="glass-card">
-            <h2 style="font-family: 'Dancing Script'; font-size: 2.5rem; color: var(--accent);">Obsidian Dashboard</h2>
+    <div class="vault-container" id="vault-secondary">
+        <div class="glass-module">
+            <h1 class="blossom-script" style="margin-bottom: 1.5rem;">Deep Space</h1>
             
-            <div class="vault-box">
-                <p style="font-size: 0.6rem; color: var(--accent); letter-spacing: 2px;">HER DECRYPTED REPLY</p>
-                <p id="her-reply-text" style="margin-top: 10px; font-style: italic; opacity: 0.8;">(Waiting for synchronization...)</p>
+            <div class="bento-grid">
+                <div class="bento-item">
+                    <span class="label-mini">Incoming Frequency</span>
+                    <p id="remote-data-display" style="font-style: italic; line-height: 1.6; opacity: 0.9;">No incoming data detected.</p>
+                </div>
+                
+                <div class="bento-item">
+                    <span class="label-mini">Private Transmission</span>
+                    <textarea class="premium-textarea" id="private-note-input" placeholder="Write a note only 2026 can see..."></textarea>
+                    <button class="action-btn" style="background: var(--accent-primary); margin-top: 15px;" onclick="handleSync('deep_note', 'private-note-input')">Encrypt & Store</button>
+                </div>
             </div>
 
-            <div class="vault-box">
-                <p style="font-size: 0.6rem; color: var(--accent); letter-spacing: 2px;">YOUR PRIVATE VAULT NOTE</p>
-                <textarea id="deep-note-input" placeholder="Something only 2026 reveals..."></textarea>
-                <button onclick="save('deep_note', 'deep-note-input')" class="btn" style="background: var(--accent);">Secure Update</button>
-            </div>
-
-            <button onclick="location.reload()" class="btn" style="background: transparent; border: 1px solid var(--border); color: #fff; font-size: 0.8rem;">Close Vault</button>
+            <button class="action-btn secondary" onclick="location.reload()" style="margin-top: 2rem;">Disconnect Session</button>
         </div>
     </div>
 
     <script>
-        const input = document.getElementById('pass-input');
-        const lock = document.getElementById('master-lock');
-        const scanner = document.getElementById('scanner-line');
-        const music = document.getElementById('bg-track');
-
-        // 1. Time-Aware Greeting
-        const hour = new Date().getHours();
-        document.getElementById('time-greet').innerText = hour < 12 ? "GOOD MORNING, BLOSSOM" : hour < 18 ? "GOOD AFTERNOON, BLOSSOM" : "GOOD EVENING, BLOSSOM";
-
-        // 2. Neural Particle System
-        const pCanvas = document.getElementById('particle-canvas');
+        /**
+         * 1. PHYSICS ENGINE: PARTICLE DRIFT
+         * Creates the "Neural Network" background effect
+         */
+        const pCanvas = document.getElementById('particle-engine');
         const pCtx = pCanvas.getContext('2d');
         let particles = [];
-        function initP() {
-            pCanvas.width = window.innerWidth; pCanvas.height = window.innerHeight;
-            for(let i=0; i<50; i++) particles.push({ x: Math.random()*pCanvas.width, y: Math.random()*pCanvas.height, vx: (Math.random()-0.5)*0.3, vy: (Math.random()-0.5)*0.3 });
+        
+        function resize() {
+            pCanvas.width = window.innerWidth;
+            pCanvas.height = window.innerHeight;
         }
-        function drawP() {
-            pCtx.clearRect(0,0,pCanvas.width, pCanvas.height);
-            pCtx.fillStyle = "rgba(255,255,255,0.15)";
-            particles.forEach(p => {
-                p.x += p.vx; p.y += p.vy;
-                if(p.x<0 || p.x>pCanvas.width) p.vx*=-1; if(p.y<0 || p.y>pCanvas.height) p.vy*=-1;
-                pCtx.beginPath(); pCtx.arc(p.x, p.y, 1, 0, Math.PI*2); pCtx.fill();
-            });
-            requestAnimationFrame(drawP);
-        }
-        initP(); drawP();
 
-        // 3. Cursor Tracking
+        class Particle {
+            constructor() {
+                this.reset();
+            }
+            reset() {
+                this.x = Math.random() * pCanvas.width;
+                this.y = Math.random() * pCanvas.height;
+                this.vx = (Math.random() - 0.5) * 0.4;
+                this.vy = (Math.random() - 0.5) * 0.4;
+                this.size = Math.random() * 1.5 + 0.5;
+            }
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                if (this.x < 0 || this.x > pCanvas.width) this.vx *= -1;
+                if (this.y < 0 || this.y > pCanvas.height) this.vy *= -1;
+            }
+            draw() {
+                pCtx.beginPath();
+                pCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                pCtx.fillStyle = "rgba(255, 255, 255, 0.15)";
+                pCtx.fill();
+            }
+        }
+
+        function initParticles() {
+            resize();
+            particles = Array.from({length: 60}, () => new Particle());
+            animate();
+        }
+
+        function animate() {
+            pCtx.clearRect(0, 0, pCanvas.width, pCanvas.height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(animate);
+        }
+
+        /**
+         * 2. INTERACTIVE UI LOGIC
+         * Handles mouse tracking and time-based greetings
+         */
         window.addEventListener('mousemove', e => {
-            document.getElementById('cursor-glow').style.setProperty('--x', `${e.clientX}px`);
-            document.getElementById('cursor-glow').style.setProperty('--y', `${e.clientY}px`);
+            document.body.style.setProperty('--mouse-x', `${e.clientX}px`);
+            document.body.style.setProperty('--mouse-y', `${e.clientY}px`);
         });
 
-        // 4. Master Entrance
-        input.addEventListener('input', (e) => {
+        const setGreeting = () => {
+            const hour = new Date().getHours();
+            const label = document.getElementById('greeting-label');
+            if (hour < 12) label.innerText = "Good Morning, Blossom";
+            else if (hour < 18) label.innerText = "Good Afternoon, Blossom";
+            else label.innerText = "Good Evening, Blossom";
+        };
+
+        /**
+         * 3. AUTHENTICATION & SCANNER ENGINE
+         */
+        const authInput = document.getElementById('vault-key');
+        authInput.addEventListener('input', (e) => {
             const val = e.target.value;
             if (val === '2025' || val === '2026') {
-                input.blur();
-                scanner.style.display = 'block';
-                scanner.style.animation = 'scan 1.2s forwards';
-                
-                setTimeout(() => {
-                    lock.style.opacity = '0';
-                    setTimeout(() => {
-                        lock.style.display = 'none';
-                        if(val === '2025') {
-                            document.getElementById('vault-blossom').style.display = 'block';
-                        } else {
-                            document.getElementById('vault-deep').style.display = 'block';
-                            loadVaultData();
-                        }
-                        confetti({ particleCount: 100, spread: 70 });
-                    }, 800);
-                }, 1200);
+                authInput.blur();
+                performBiometricScan(() => {
+                    transitionVault(val === '2025' ? 'vault-primary' : 'vault-secondary');
+                });
             }
         });
 
-        // 5. Story Logic (2025)
-        const story = ["Hi Blossom...", "They say digital spaces are cold,", "But this one is warm because you're in it.", "You're a real gem. Thank you for being you. 🌸"];
-        let sIdx = 0;
-        document.getElementById('start-btn').onclick = () => {
-            document.getElementById('start-btn').style.display = 'none';
-            music.volume = 0.2; music.play();
-            const interval = setInterval(() => {
-                if(sIdx < story.length) {
-                    const box = document.getElementById('text-box');
-                    box.style.opacity = 0;
+        function performBiometricScan(callback) {
+            const scanner = document.getElementById('biometric-scanner');
+            scanner.style.display = 'block';
+            scanner.style.animation = 'laser-scan 1.4s forwards';
+            
+            // Visual "Haptic" Feedback
+            document.getElementById('auth-panel').classList.add('shake');
+            
+            setTimeout(() => {
+                document.getElementById('auth-panel').classList.remove('shake');
+                document.getElementById('master-auth').style.opacity = '0';
+                document.getElementById('master-auth').style.transform = 'translateY(-100%)';
+                setTimeout(callback, 800);
+            }, 1400);
+        }
+
+        function transitionVault(id) {
+            const target = document.getElementById(id);
+            target.classList.add('active');
+            if (id === 'vault-secondary') loadDeepVaultData();
+            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#ffffff', '#ff9a9e'] });
+        }
+
+        /**
+         * 4. NARRATIVE & STORYTELLING ENGINE
+         */
+        const script = [
+            "Hi Blossom...",
+            "They say digital things have no soul.",
+            "But I think this space is different.",
+            "Because your frequency is woven into the code.",
+            "Thank you for being a constant light. 🌸"
+        ];
+
+        document.getElementById('trigger-narrative').onclick = function() {
+            this.classList.add('hidden');
+            document.getElementById('ambient-audio').volume = 0.3;
+            document.getElementById('ambient-audio').play();
+            
+            let i = 0;
+            const engine = document.getElementById('narrative-engine');
+            const run = () => {
+                if (i < script.length) {
+                    engine.style.opacity = 0;
                     setTimeout(() => {
-                        box.innerText = story[sIdx];
-                        box.style.opacity = 1;
-                        sIdx++;
-                    }, 500);
+                        engine.innerText = script[i];
+                        engine.style.opacity = 1;
+                        i++;
+                        setTimeout(run, 3500);
+                    }, 600);
                 } else {
-                    clearInterval(interval);
-                    document.getElementById('text-box').innerHTML = "<span style='font-family:Dancing Script; font-size:2.8rem; color:var(--accent)'>Over to you!</span>";
-                    document.getElementById('blossom-controls').classList.remove('hidden');
-                    initSig();
+                    engine.innerHTML = "<span class='blossom-script'>The floor is yours.</span>";
+                    document.getElementById('post-narrative-ui').classList.remove('hidden');
+                    initSignatureEngine();
                 }
-            }, 3500);
+            };
+            run();
         };
 
-        // 6. Signature Pad Logic
-        function initSig() {
-            const pad = document.getElementById('sig-pad');
-            const sCtx = pad.getContext('2d');
-            pad.width = pad.offsetWidth; pad.height = pad.offsetHeight;
-            let draw = false;
-            const getXY = (e) => {
-                const r = pad.getBoundingClientRect();
-                return { x: (e.clientX || e.touches[0].clientX) - r.left, y: (e.clientY || e.touches[0].clientY) - r.top };
+        /**
+         * 5. SIGNATURE & DATA PERSISTENCE
+         */
+        function initSignatureEngine() {
+            const pad = document.getElementById('signature-pad');
+            const ctx = pad.getContext('2d');
+            pad.width = pad.offsetWidth;
+            pad.height = pad.offsetHeight;
+            
+            let active = false;
+            const getPos = (e) => {
+                const rect = pad.getBoundingClientRect();
+                return {
+                    x: (e.clientX || e.touches[0].clientX) - rect.left,
+                    y: (e.clientY || e.touches[0].clientY) - rect.top
+                };
             };
-            pad.onmousedown = pad.ontouchstart = (e) => { draw = true; sCtx.beginPath(); const p = getXY(e); sCtx.moveTo(p.x, p.y); };
-            pad.onmousemove = pad.ontouchmove = (e) => { if(draw) { const p = getXY(e); sCtx.lineTo(p.x, p.y); sCtx.strokeStyle="#000"; sCtx.lineWidth=3; sCtx.stroke(); } };
-            window.onmouseup = window.ontouchend = () => draw = false;
+
+            const start = (e) => { active = true; ctx.beginPath(); const p = getPos(e); ctx.moveTo(p.x, p.y); };
+            const move = (e) => { 
+                if (!active) return; 
+                const p = getPos(e); 
+                ctx.lineTo(p.x, p.y); 
+                ctx.strokeStyle = "#111111"; 
+                ctx.lineWidth = 3; 
+                ctx.lineCap = 'round'; 
+                ctx.stroke(); 
+            };
+            const stop = () => active = false;
+
+            pad.addEventListener('mousedown', start);
+            pad.addEventListener('touchstart', start);
+            window.addEventListener('mousemove', move);
+            window.addEventListener('touchmove', move);
+            window.addEventListener('mouseup', stop);
+            window.addEventListener('touchend', stop);
         }
 
-        // 7. Data Handling
-        function save(key, id) {
-            localStorage.setItem(key, document.getElementById(id).value);
-            if(key === 'blossom_reply') localStorage.setItem('blossom_sig', document.getElementById('sig-pad').toDataURL());
-            confetti({ particleCount: 50, origin: { y: 0.8 } });
-            alert("Vault Synchronized. ✨");
+        function handleSync(key, inputId) {
+            const val = document.getElementById(inputId).value;
+            localStorage.setItem(key, val);
+            if (key === 'blossom_reply') {
+                localStorage.setItem('blossom_seal', document.getElementById('signature-pad').toDataURL());
+            }
+            confetti({ particleCount: 60, scalar: 0.8 });
+            alert("Vault Synchronized. Data Locked.");
         }
 
-        function loadVaultData() {
+        function loadDeepVaultData() {
             const reply = localStorage.getItem('blossom_reply');
-            if(reply) document.getElementById('her-reply-text').innerText = `"${reply}"`;
-            const deep = localStorage.getItem('deep_note');
-            if(deep) document.getElementById('deep-note-input').value = deep;
+            if (reply) document.getElementById('remote-data-display').innerText = `"${reply}"`;
+            const note = localStorage.getItem('deep_note');
+            if (note) document.getElementById('private-note-input').value = note;
         }
+
+        // STARTUP
+        window.onload = () => {
+            initParticles();
+            setGreeting();
+            // Safety: Ensure input is clickable
+            document.getElementById('vault-key').focus();
+        };
     </script>
 </body>
 </html>
