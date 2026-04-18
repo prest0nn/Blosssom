@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Blossom 💋</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Plus+Jakarta+Sans:wght@200;400;600&display=swap');
+
+       
+        :root {
+            --accent: oklch(75% 0.15 0);
+            --bg-dark: oklch(12% 0.02 260);
+            --glass: oklch(100% 0 0 / 0.05);
+            --border: oklch(100% 0 0 / 0.15);
+            --text-main: oklch(98% 0.01 260);
+        }
+
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            -webkit-tap-highlight-color: transparent; 
+        }
+
+        body {
+            height: 100vh;
+            display: grid;
+            place-items: center;
+            background-color: var(--bg-dark);
+            /* Advanced Mesh Gradient */
+            background-image: 
+                radial-gradient(at 0% 0%, oklch(25% 0.08 260) 0, transparent 55%), 
+                radial-gradient(at 100% 100%, oklch(20% 0.1 340) 0, transparent 55%);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow: hidden;
+            color: var(--text-main);
+        }
+
+        /* 1. SECURE ACCESS SCREEN */
+        #access-screen {
+            position: fixed;
+            inset: 0;
+            background: var(--bg-dark);
+            z-index: 100;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.8s;
+        }
+
+        .passcode-card {
+            background: var(--glass);
+            padding: clamp(2rem, 8vw, 4rem);
+            border-radius: 40px;
+            border: 1px solid var(--border);
+            backdrop-filter: blur(40px);
+            text-align: center;
+            box-shadow: 0 50px 100px -20px rgba(0,0,0,0.5);
+        }
+
+        #code-input {
+            all: unset;
+            width: 180px;
+            padding: 15px;
+            margin-top: 25px;
+            font-size: 2.5rem;
+            letter-spacing: 12px;
+            border-bottom: 2px solid var(--accent);
+            text-align: center;
+            color: var(--accent);
+        }
+
+        /* 2. MAIN EXPERIENCE CARD */
+        .card {
+            width: min(92%, 500px);
+            padding: clamp(2rem, 6vw, 3.5rem);
+            background: var(--glass);
+            backdrop-filter: blur(30px) saturate(180%);
+            border: 1px solid var(--border);
+            border-radius: 36px;
+            box-shadow: 0 40px 120px rgba(0, 0, 0, 0.7);
+            text-align: center;
+            z-index: 10;
+        }
+
+        #text-display {
+            font-size: clamp(1.2rem, 5vw, 1.7rem);
+            font-weight: 200;
+            line-height: 1.6;
+            min-height: 180px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-wrap: balance;
+            transition: opacity 0.8s ease, transform 0.8s ease, filter 0.8s ease;
+        }
+
+        .cta-button {
+            all: unset;
+            margin-top: 2.5rem;
+            padding: 1.2rem 3.5rem;
+            background: #ffffff;
+            color: #000000;
+            border-radius: 100px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.5s cubic-bezier(0.2, 1, 0.3, 1);
+            box-shadow: 0 10px 40px rgba(255, 255, 255, 0.1);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-8px) scale(1.05);
+            background: var(--accent);
+            box-shadow: 0 20px 50px rgba(255, 154, 158, 0.3);
+        }
+
+        /* 3. SIGNATURE SYSTEM */
+        #sig-area {
+            margin-top: 2rem;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        canvas {
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 24px;
+            width: 100%;
+            height: 200px;
+            cursor: crosshair;
+            margin-top: 15px;
+            touch-action: none;
+        }
+
+        /* UTILITIES */
+        .hidden { display: none !important; }
+        .fade-out { opacity: 0; filter: blur(15px); transform: translateY(-10px); }
+        .reveal { opacity: 1 !important; transform: translateY(0) !important; }
+        .shake { animation: shake 0.5s linear; }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-10px); }
+            40%, 80% { transform: translateX(10px); }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="access-screen">
+        <div class="passcode-card" id="lock-box">
+            <h2 style="font-weight: 200; letter-spacing: 2px;">SECURE ACCESS</h2>
+            <input type="password" id="code-input" maxlength="4" placeholder="••••" autofocus>
+            <p id="err" style="color: #ff6b6b; margin-top: 15px; font-size: 0.8rem; opacity: 0;">Access Denied</p>
+        </div>
+    </div>
+
+    <audio id="bg-track" loop>
+        <source src="https://www.bensound.com/bensound-music/bensound-tenderness.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="card hidden" id="experience-card">
+        <div id="text-display">Validation successful. Welcome, Blossom.</div>
+        <button id="start-btn" class="cta-button">Begin Journey</button>
+
+        <div id="sig-area" class="hidden">
+            <p style="font-size: 0.8rem; margin-bottom: 12px; color: var(--accent); letter-spacing: 2px;">FOREVER FRIENDSHIP SEAL</p>
+            <canvas id="canvas"></canvas>
+            <div style="display: flex; gap: 15px; justify-content: center; margin-top: 20px;">
+                <button style="padding: 10px 25px; font-size: 0.7rem; background: #222; color: #fff; border-radius: 50px; cursor: pointer; border: none;" id="clear">Clear</button>
+                <button style="padding: 10px 25px; font-size: 0.7rem; background: var(--accent); border-radius: 50px; cursor: pointer; border: none;" id="save">Save Forever</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const lock = document.getElementById('access-screen');
+        const code = document.getElementById('code-input');
+        const main = document.getElementById('experience-card');
+        const display = document.getElementById('text-display');
+        const btn = document.getElementById('start-btn');
+        const music = document.getElementById('bg-track');
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
+        // 1. Password Verification
+        code.addEventListener('input', (e) => {
+            if (e.target.value === '2025') {
+                lock.style.opacity = '0';
+                setTimeout(() => {
+                    lock.classList.add('hidden');
+                    main.classList.remove('hidden');
+                }, 800);
+            } else if (e.target.value.length === 4) {
+                document.getElementById('lock-box').classList.add('shake');
+                document.getElementById('err').style.opacity = '1';
+                setTimeout(() => {
+                    document.getElementById('lock-box').classList.remove('shake');
+                    e.target.value = '';
+                }, 500);
+            }
+        });
+
+        // 2. Story Sequence
+        const story = [
+            "Hey Blossom...",
+            "In a world where everything moves so fast,",
+            "Genuine friendship is the only thing that anchors us.",
+            "You have this rare energy...",
+            "The kind that turns a bad day into a good memory.",
+            "I wanted to be intentional today.",
+            "To tell you that I'm truly grateful for you.",
+            "Thank you for being exactly who you are.",
+            "You're a real gem, Blossom. 🌸"
+        ];
+
+        let i = 0;
+        function playStory() {
+            if (i < story.length) {
+                display.classList.add('fade-out');
+                setTimeout(() => {
+                    display.innerText = story[i];
+                    display.classList.remove('fade-out');
+                    i++;
+                    setTimeout(playStory, 3800);
+                }, 800);
+            } else {
+                display.style.fontFamily = "'Dancing Script', cursive";
+                display.style.fontSize = "2.8rem";
+                display.style.color = "var(--accent)";
+                display.innerText = "Grateful for you!";
+                document.getElementById('sig-area').classList.remove('hidden');
+                setTimeout(() => document.getElementById('sig-area').classList.add('reveal'), 100);
+                
+                const stored = localStorage.getItem('blossom_seal');
+                if (stored) {
+                    const img = new Image();
+                    img.onload = () => ctx.drawImage(img, 0, 0);
+                    img.src = stored;
+                }
+            }
+        }
+
+        btn.onclick = () => {
+            btn.classList.add('hidden');
+            music.volume = 0.3;
+            music.play();
+            playStory();
+        };
+
+        // 3. Signature Engine Logic
+        let active = false;
+        function getXY(e) {
+            const r = canvas.getBoundingClientRect();
+            const x = (e.clientX || (e.touches ? e.touches[0].clientX : 0)) - r.left;
+            const y = (e.clientY || (e.touches ? e.touches[0].clientY : 0)) - r.top;
+            return { x, y };
+        }
+
+        function start(e) { active = true; ctx.beginPath(); const p = getXY(e); ctx.moveTo(p.x, p.y); }
+        function draw(e) {
+            if (!active) return;
+            const p = getXY(e);
+            ctx.lineTo(p.x, p.y);
+            ctx.strokeStyle = "#111";
+            ctx.lineWidth = 3;
+            ctx.lineCap = "round";
+            ctx.stroke();
+        }
+
+        canvas.onmousedown = start; 
+        canvas.onmousemove = draw; 
+        window.onmouseup = () => active = false;
+        canvas.ontouchstart = (e) => { e.preventDefault(); start(e); };
+        canvas.ontouchmove = (e) => { e.preventDefault(); draw(e); };
+
+        document.getElementById('clear').onclick = () => {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            localStorage.removeItem('blossom_seal');
+        };
+
+        document.getElementById('save').onclick = () => {
+            localStorage.setItem('blossom_seal', canvas.toDataURL());
+            alert("Friendship Seal Saved Forever! ❤️");
+        };
+
+        // Initialize Canvas Resolution
+        canvas.width = canvas.offsetWidth;
+        canvas.height = canvas.offsetHeight;
+    </script>
+</body>
+</html>
