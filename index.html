@@ -3,54 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>The Obsidian Vault | For Blossom 🌸</title>
+    <title>Preston hates Blossom🫳</title>
+    
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+    
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Plus+Jakarta+Sans:wght@200;300;400;500;600;800&display=swap');
+        
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700;800&family=JetBrains+Mono:wght@400&display=swap');
 
-        /* PREMIUM DESIGN SYSTEM (2026)
-           Using OKLCH for superior color depth and vibrancy
-        */
         :root {
-            --accent-primary: oklch(75% 0.18 350);
-            --accent-secondary: oklch(65% 0.25 330);
-            --bg-deep: oklch(8% 0.02 260);
-            --bg-surface: oklch(12% 0.03 260);
-            --glass-core: oklch(100% 0 0 / 0.03);
-            --glass-stroke: oklch(100% 0 0 / 0.12);
-            --text-main: oklch(98% 0.01 260);
-            --text-dim: oklch(65% 0.02 260);
-            --error: oklch(60% 0.2 25);
-            --success: oklch(75% 0.15 150);
+            /* Core Color Palette */
+            --accent-glow: oklch(75% 0.18 350);
+            --accent-mute: oklch(75% 0.18 350 / 0.15);
+            --bg-deep: oklch(5% 0.01 260);
+            --bg-surface: oklch(100% 0 0 / 0.03);
+            --border-primary: oklch(100% 0 0 / 0.12);
+            --text-high: oklch(98% 0.01 260);
+            --text-low: oklch(60% 0.02 260);
+            
+            /* Motion Design */
+            --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+            --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+            --transition-main: 0.8s;
+            
+            /* Shadow Systems */
+            --shadow-vault: 0 60px 120px -30px rgba(0,0,0,0.8);
         }
 
-        /* RESET & BASE STYLES */
+        /* -------------------------------------------------------------------------
+           1. ROOT STYLES & RESET
+           ------------------------------------------------------------------------- */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             -webkit-tap-highlight-color: transparent;
-            user-select: none;
+            outline: none !important;
+            scrollbar-width: none;
         }
 
-        body {
+        *::-webkit-scrollbar { display: none; }
+
+        html, body {
+            width: 100%;
             height: 100dvh;
             background-color: var(--bg-deep);
             font-family: 'Plus Jakarta Sans', sans-serif;
             overflow: hidden;
-            color: var(--text-main);
+            color: var(--text-high);
+            user-select: none;
+        }
+
+        body {
             display: flex;
             justify-content: center;
             align-items: center;
-            perspective: 1000px;
+            perspective: 1500px;
         }
 
-        /* BACKGROUND ENGINE LAYER */
-        #particle-engine {
+        /* -------------------------------------------------------------------------
+           2. PHYSICS CANVAS (THE NEURAL WEB)
+           ------------------------------------------------------------------------- */
+        #neural-engine {
             position: fixed;
             inset: 0;
             z-index: 1;
             pointer-events: none;
+            opacity: 0.5;
         }
 
         #dynamic-spotlight {
@@ -59,496 +78,678 @@
             z-index: 2;
             pointer-events: none;
             background: radial-gradient(
-                circle 300px at var(--mouse-x, 50%) var(--mouse-y, 50%),
-                oklch(75% 0.18 350 / 0.08),
-                transparent 80%
+                circle 450px at var(--mx, 50%) var(--my, 50%),
+                var(--accent-mute),
+                transparent 70%
             );
         }
 
-        /* BIOMETRIC SCANNER OVERLAY */
-        #biometric-scanner {
+        /* -------------------------------------------------------------------------
+           3. TERMINAL INTERFACE (PRE-BOOT)
+           ------------------------------------------------------------------------- */
+        .terminal-log-container {
             position: fixed;
-            top: -5px;
+            bottom: 30px;
+            left: 30px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--accent-glow);
+            z-index: 900;
+            opacity: 0.8;
+            line-height: 1.8;
+            pointer-events: none;
+            text-shadow: 0 0 8px var(--accent-glow);
+        }
+
+        #laser-scanner-line {
+            position: fixed;
+            top: -10px;
             left: 0;
             width: 100%;
-            height: 3px;
-            background: var(--accent-primary);
-            z-index: 999;
-            box-shadow: 0 0 15px var(--accent-primary), 0 0 30px var(--accent-primary);
-            opacity: 0;
+            height: 4px;
+            background: var(--accent-glow);
+            box-shadow: 0 0 40px var(--accent-glow), 0 0 80px var(--accent-glow);
+            z-index: 1000;
+            display: none;
             pointer-events: none;
         }
 
-        /* LOCK SCREEN INTERFACE 
-           Z-Index set high to prevent background blocking
-        */
-        .access-overlay {
+        /* -------------------------------------------------------------------------
+           4. AUTHENTICATION (LOCK SCREEN)
+           ------------------------------------------------------------------------- */
+        .lock-overlay {
             position: fixed;
             inset: 0;
             background: var(--bg-deep);
-            z-index: 800;
+            z-index: 850;
             display: flex;
             justify-content: center;
             align-items: center;
-            transition: transform 1.2s cubic-bezier(0.85, 0, 0.15, 1), opacity 0.8s ease;
+            transition: transform 1.8s var(--ease-out-expo), opacity 1.2s ease;
         }
 
-        .auth-card {
-            background: var(--glass-core);
-            backdrop-filter: blur(80px) saturate(180%);
-            padding: 4rem 3rem;
-            border-radius: 60px;
-            border: 1px solid var(--glass-stroke);
+        .terminal-auth-card {
+            background: var(--bg-surface);
+            backdrop-filter: blur(120px) saturate(210%);
+            -webkit-backdrop-filter: blur(120px) saturate(210%);
+            border: 1px solid var(--border-primary);
+            border-radius: 64px;
+            padding: 5rem 3.5rem;
             text-align: center;
-            width: min(90%, 460px);
+            width: min(94%, 500px);
             position: relative;
-            box-shadow: 0 50px 100px -20px rgba(0,0,0,0.7);
+            box-shadow: var(--shadow-vault);
+            transform: translateZ(0);
         }
 
-        .auth-card::after {
+        .terminal-auth-card::after {
             content: '';
             position: absolute;
             inset: 0;
-            border-radius: 60px;
-            padding: 1px;
-            background: linear-gradient(135deg, var(--glass-stroke), var(--accent-primary), var(--glass-stroke));
+            padding: 2px;
+            border-radius: 64px;
+            background: linear-gradient(145deg, var(--border-primary), var(--accent-glow), var(--border-primary));
             -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
             mask-composite: exclude;
             pointer-events: none;
+            opacity: 0.3;
         }
 
-        .status-label {
-            font-size: 0.65rem;
-            letter-spacing: 6px;
-            color: var(--accent-primary);
-            text-transform: uppercase;
-            font-weight: 600;
-            margin-bottom: 2rem;
+        .auth-status-label {
             display: block;
+            font-size: 0.8rem;
+            letter-spacing: 8px;
+            color: var(--accent-glow);
+            text-transform: uppercase;
+            font-weight: 800;
+            margin-bottom: 3rem;
         }
 
-        .passcode-input {
+        .key-input-field {
             all: unset;
             width: 100%;
-            font-size: 4rem;
-            letter-spacing: 24px;
+            font-size: 5rem;
+            letter-spacing: 28px;
+            color: var(--text-high);
             text-align: center;
-            color: var(--text-main);
             font-weight: 800;
-            border-bottom: 2px solid var(--glass-stroke);
-            padding-bottom: 10px;
-            transition: border-color 0.4s ease;
-            cursor: text;
+            border-bottom: 2px solid var(--border-primary);
+            padding-bottom: 15px;
+            transition: 0.5s var(--ease-standard);
         }
 
-        .passcode-input:focus {
-            border-color: var(--accent-primary);
+        .key-input-field:focus {
+            border-color: var(--accent-glow);
         }
 
-        /* MAIN VAULT ARCHITECTURE
-        */
-        .vault-container {
+        /* -------------------------------------------------------------------------
+           5. VAULT MODULES
+           ------------------------------------------------------------------------- */
+        .module-wrapper {
             position: relative;
             z-index: 100;
-            width: min(94%, 540px);
+            width: min(94%, 600px);
             display: none;
             opacity: 0;
-            transform: translateY(20px) scale(0.98);
-            transition: all 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+            transform: translateY(60px);
+            transition: 1.5s var(--ease-out-expo);
         }
 
-        .vault-container.active {
+        .module-wrapper.active {
             display: block;
-            opacity: 1;
-            transform: translateY(0) scale(1);
+            animation: moduleReveal 1.4s var(--ease-out-expo) forwards;
         }
 
-        .glass-module {
-            background: var(--glass-core);
-            backdrop-filter: blur(40px);
-            border-radius: 44px;
-            border: 1px solid var(--glass-stroke);
-            padding: 2.5rem;
+        @keyframes moduleReveal {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .bento-module {
+            background: var(--bg-surface);
+            backdrop-filter: blur(60px);
+            border-radius: 48px;
+            border: 1px solid var(--border-primary);
+            padding: 3rem;
             margin-bottom: 1.5rem;
-            position: relative;
         }
 
-        #narrative-engine {
-            font-size: 1.6rem;
-            font-weight: 300;
-            line-height: 1.5;
-            min-height: 220px;
+        /* -------------------------------------------------------------------------
+           6. NARRATIVE PLAYER
+           ------------------------------------------------------------------------- */
+        #narrative-console {
+            font-size: 1.75rem;
+            font-weight: 200;
+            line-height: 1.7;
+            min-height: 260px;
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
-            color: var(--text-main);
-            transition: opacity 0.6s ease;
+            color: var(--text-high);
         }
 
-        /* SIGNATURE ENGINE */
-        .signature-module {
-            margin-top: 2rem;
-            text-align: center;
+        .blossom-script {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3.5rem;
+            color: var(--accent-glow);
         }
 
-        canvas#signature-pad {
-            background: #ffffff;
-            border-radius: 28px;
-            width: 100%;
-            height: 200px;
-            margin: 1.5rem 0;
-            cursor: crosshair;
-            touch-action: none;
-        }
-
-        /* DATA INPUTS */
-        .premium-textarea {
-            width: 100%;
-            height: 120px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--glass-stroke);
-            border-radius: 24px;
-            padding: 1.2rem;
-            color: #fff;
-            font-family: inherit;
-            resize: none;
-            outline: none;
-            transition: 0.3s;
-        }
-
-        .premium-textarea:focus {
-            border-color: var(--accent-primary);
-            background: rgba(255, 255, 255, 0.08);
-        }
-
-        /* ACTION BUTTONS */
-        .action-btn {
+        /* -------------------------------------------------------------------------
+           7. INTERFACE CONTROLS
+           ------------------------------------------------------------------------- */
+        .action-button {
             all: unset;
             display: block;
             width: 100%;
-            padding: 1.2rem 0;
-            background: #fff;
-            color: #000;
-            border-radius: 22px;
-            font-weight: 700;
+            padding: 1.4rem 0;
+            background: var(--text-high);
+            color: var(--bg-deep);
+            border-radius: 28px;
+            font-weight: 800;
             text-align: center;
             cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            margin-top: 1rem;
+            transition: 0.5s var(--ease-out-expo);
+            margin-top: 2rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
 
-        .action-btn:hover {
-            transform: translateY(-4px);
-            background: var(--accent-primary);
-            box-shadow: 0 20px 40px oklch(75% 0.18 350 / 0.25);
+        .action-button:hover {
+            background: var(--accent-glow);
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 25px 50px oklch(75% 0.18 350 / 0.35);
         }
 
-        .action-btn.secondary {
+        .action-button.secondary {
             background: transparent;
-            color: #fff;
-            border: 1px solid var(--glass-stroke);
+            color: var(--text-high);
+            border: 1px solid var(--border-primary);
         }
 
-        /* 2026 BENTO DASHBOARD STYLES */
+        .signature-surface {
+            background: #ffffff;
+            border-radius: 28px;
+            width: 100%;
+            height: 220px;
+            margin: 2rem 0;
+            touch-action: none;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"><circle cx="16" cy="16" r="4" fill="black"/></svg>'), auto;
+        }
+
+        .input-area-premium {
+            width: 100%;
+            height: 140px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-primary);
+            border-radius: 28px;
+            padding: 1.5rem;
+            color: var(--text-high);
+            font-family: inherit;
+            font-size: 1rem;
+            resize: none;
+            margin-top: 1.2rem;
+            transition: 0.3s;
+        }
+
+        .input-area-premium:focus {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: var(--accent-glow);
+        }
+
+        /* -------------------------------------------------------------------------
+           8. GRID COMPONENTS
+           ------------------------------------------------------------------------- */
         .bento-grid {
             display: grid;
             gap: 1.5rem;
-            text-align: left;
         }
 
-        .bento-item {
-            background: rgba(0, 0, 0, 0.25);
-            border-radius: 30px;
-            padding: 20px;
-            border: 1px solid var(--glass-stroke);
+        .bento-node {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border-primary);
+            border-radius: 36px;
+            padding: 28px;
         }
 
-        .label-mini {
-            font-size: 0.6rem;
-            color: var(--accent-primary);
-            letter-spacing: 3px;
-            margin-bottom: 10px;
+        .node-tag {
+            font-size: 0.65rem;
+            font-weight: 800;
+            color: var(--accent-glow);
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            margin-bottom: 15px;
             display: block;
         }
 
-        /* UTILITIES */
-        .hidden { display: none !important; }
-        .blossom-script { font-family: 'Dancing Script', cursive; font-size: 3rem; color: var(--accent-primary); }
-
-        @keyframes laser-scan {
+        /* -------------------------------------------------------------------------
+           9. SYSTEM ANIMATIONS
+           ------------------------------------------------------------------------- */
+        @keyframes scan-cycle {
             0% { top: 0%; opacity: 1; }
             50% { opacity: 1; }
             100% { top: 100%; opacity: 0; }
         }
 
-        @keyframes haptic-shake {
-            0%, 100% { transform: translate(0,0); }
-            25% { transform: translate(-2px, 2px); }
-            75% { transform: translate(2px, -2px); }
+        @keyframes terminal-haptic {
+            0% { transform: translate(0, 0); }
+            10% { transform: translate(-3px, 3px); }
+            30% { transform: translate(3px, -3px); }
+            50% { transform: translate(-3px, -3px); }
+            70% { transform: translate(3px, 3px); }
+            100% { transform: translate(0, 0); }
         }
 
-        .shake { animation: haptic-shake 0.1s infinite; }
+        .haptic-vibrate { animation: terminal-haptic 0.12s linear infinite; }
+        .hidden { display: none !important; }
+
     </style>
 </head>
 <body>
 
-    <canvas id="particle-engine"></canvas>
+    <canvas id="neural-engine"></canvas>
     <div id="dynamic-spotlight"></div>
-    <div id="biometric-scanner"></div>
+    <div id="laser-scanner-line"></div>
+    
+    <div class="terminal-log-container" id="terminal-output">
+        [ PRESTON TERMINAL v2.0.8 ]<br>
+        [ KERNEL: ARMOR_PROTOCOL ]<br>
+        [ STATUS: STANDBY ]
+    </div>
 
-    <div class="access-overlay" id="master-auth">
-        <div class="auth-card" id="auth-panel">
-            <span id="greeting-label" class="status-label">System Initializing</span>
-            <input type="password" class="passcode-input" id="vault-key" maxlength="4" placeholder="••••" inputmode="numeric" autofocus>
-            <p style="font-size: 0.6rem; margin-top: 2rem; opacity: 0.4; letter-spacing: 2px;">SECURE HANDSHAKE REQUIRED</p>
+    <div class="lock-overlay" id="main-gate">
+        <div class="terminal-auth-card" id="auth-panel">
+            <span class="auth-status-label" id="time-greeting">Identity Check</span>
+            <input type="password" class="key-input-field" id="pin-field" maxlength="4" placeholder="••••" inputmode="numeric" autofocus>
+            <p style="font-size: 0.6rem; color: var(--text-low); margin-top: 3rem; letter-spacing: 4px;">SECURE BRIDGE BY PRESTON 🦾</p>
         </div>
     </div>
 
-    <audio id="ambient-audio" loop>
+    <audio id="terminal-ambient" loop>
         <source src="https://cdn.pixabay.com/audio/2022/05/27/audio_1808f3030c.mp3" type="audio/mpeg">
     </audio>
 
-    <div class="vault-container" id="vault-primary">
-        <div class="glass-module">
-            <div id="narrative-engine">Handshake Protocol Accepted. <br>Welcome, Blossom.</div>
-            <button class="action-btn" id="trigger-narrative">Initialize Sequence</button>
+    <div class="module-wrapper" id="vault-blossom">
+        <div class="bento-module">
+            <div id="narrative-console">Decrypting Frequency...<br>Handshake sequence ready.</div>
+            <button class="action-button" id="init-narrative-btn">Initiate Connection</button>
             
-            <div id="post-narrative-ui" class="hidden">
-                <div class="signature-module">
-                    <span class="label-mini">Digital Seal</span>
-                    <canvas id="signature-pad"></canvas>
+            <div id="blossom-active-interface" class="hidden">
+                <div id="remote-transmission" class="bento-node hidden" style="margin-bottom: 2rem; border-color: var(--accent-glow);">
+                    <span class="node-tag">Incoming from Preston</span>
+                    <p id="transmission-text" style="font-style: italic; line-height: 1.6;"></p>
                 </div>
-                <textarea class="premium-textarea" id="blossom-response" placeholder="Type your synchronization message..."></textarea>
-                <button class="action-btn" style="background: var(--accent-primary);" onclick="handleSync('blossom_reply', 'blossom-response')">Commit to Vault ❤️</button>
+
+                <span class="node-tag">Biometric Seal Signature</span>
+                <canvas id="sig-surface" class="signature-surface"></canvas>
+                
+                <span class="node-tag">Return Transmission</span>
+                <textarea class="input-area-premium" id="her-response-data" placeholder="Write your synchronization message..."></textarea>
+                
+                <button class="action-button" style="background: var(--accent-glow);" onclick="Controller.synchronize('blossom_msg', 'her-response-data')">Commit to Vault ❤️</button>
             </div>
         </div>
     </div>
 
-    <div class="vault-container" id="vault-secondary">
-        <div class="glass-module">
-            <h1 class="blossom-script" style="margin-bottom: 1.5rem;">Deep Space</h1>
+    <div class="module-wrapper" id="vault-preston">
+        <div class="bento-module">
+            <h1 class="blossom-script" style="margin-bottom: 2rem;">Preston Bridge</h1>
             
             <div class="bento-grid">
-                <div class="bento-item">
-                    <span class="label-mini">Incoming Frequency</span>
-                    <p id="remote-data-display" style="font-style: italic; line-height: 1.6; opacity: 0.9;">No incoming data detected.</p>
+                <div class="bento-node">
+                    <span class="node-tag">Blossom's Last Data</span>
+                    <p id="bridge-data-output" style="font-style: italic; margin-bottom: 15px; opacity: 0.9;">No data found on this frequency.</p>
+                    <img id="sig-playback-node" style="width: 100%; border-radius: 20px; background: white; padding: 12px; display: none; margin-top: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
                 </div>
-                
-                <div class="bento-item">
-                    <span class="label-mini">Private Transmission</span>
-                    <textarea class="premium-textarea" id="private-note-input" placeholder="Write a note only 2026 can see..."></textarea>
-                    <button class="action-btn" style="background: var(--accent-primary); margin-top: 15px;" onclick="handleSync('deep_note', 'private-note-input')">Encrypt & Store</button>
+
+                <div class="bento-node">
+                    <span class="node-tag">New Transmission</span>
+                    <textarea class="input-area-premium" id="preston-push-data" placeholder="Message for the next session?"></textarea>
+                    <button class="action-button" style="background: var(--accent-glow);" onclick="Controller.synchronize('him_msg', 'preston-push-data')">Broadcast to Terminal</button>
                 </div>
             </div>
 
-            <button class="action-btn secondary" onclick="location.reload()" style="margin-top: 2rem;">Disconnect Session</button>
+            <button class="action-button secondary" onclick="location.reload()">Terminate Link</button>
         </div>
     </div>
 
     <script>
         /**
-         * 1. PHYSICS ENGINE: PARTICLE DRIFT
-         * Creates the "Neural Network" background effect
+         * CONTROLLER MODULE
+         * Manages Hardware, Auth, and Data Persistance
          */
-        const pCanvas = document.getElementById('particle-engine');
-        const pCtx = pCanvas.getContext('2d');
-        let particles = [];
-        
-        function resize() {
-            pCanvas.width = window.innerWidth;
-            pCanvas.height = window.innerHeight;
-        }
+        const Controller = {
+            metadata: {
+                version: "2.0.8",
+                kernel: "PRESTON_TERMINAL",
+                logs: []
+            },
 
-        class Particle {
-            constructor() {
-                this.reset();
-            }
-            reset() {
-                this.x = Math.random() * pCanvas.width;
-                this.y = Math.random() * pCanvas.height;
-                this.vx = (Math.random() - 0.5) * 0.4;
-                this.vy = (Math.random() - 0.5) * 0.4;
-                this.size = Math.random() * 1.5 + 0.5;
-            }
-            update() {
-                this.x += this.vx;
-                this.y += this.vy;
-                if (this.x < 0 || this.x > pCanvas.width) this.vx *= -1;
-                if (this.y < 0 || this.y > pCanvas.height) this.vy *= -1;
-            }
-            draw() {
-                pCtx.beginPath();
-                pCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                pCtx.fillStyle = "rgba(255, 255, 255, 0.15)";
-                pCtx.fill();
-            }
-        }
+            state: {
+                activeVault: null,
+                isAuthorized: false,
+                narrativeIndex: 0
+            },
 
-        function initParticles() {
-            resize();
-            particles = Array.from({length: 60}, () => new Particle());
-            animate();
-        }
+            /**
+             * INITIALIZATION ENGINE
+             */
+            init() {
+                this.bindGlobalEvents();
+                this.startNeuralEngine();
+                this.updateGreeting();
+                this.pushLog("System Boot Sequence Complete.");
+                this.pushLog("Preston Terminal: Online.");
+            },
 
-        function animate() {
-            pCtx.clearRect(0, 0, pCanvas.width, pCanvas.height);
-            particles.forEach(p => { p.update(); p.draw(); });
-            requestAnimationFrame(animate);
-        }
+            /**
+             * LOGGING SYSTEM
+             */
+            pushLog(message) {
+                const output = document.getElementById('terminal-output');
+                this.metadata.logs.push(`> ${message}`);
+                if (this.metadata.logs.length > 6) this.metadata.logs.shift();
+                output.innerHTML = this.metadata.logs.join('<br>');
+            },
 
-        /**
-         * 2. INTERACTIVE UI LOGIC
-         * Handles mouse tracking and time-based greetings
-         */
-        window.addEventListener('mousemove', e => {
-            document.body.style.setProperty('--mouse-x', `${e.clientX}px`);
-            document.body.style.setProperty('--mouse-y', `${e.clientY}px`);
-        });
-
-        const setGreeting = () => {
-            const hour = new Date().getHours();
-            const label = document.getElementById('greeting-label');
-            if (hour < 12) label.innerText = "Good Morning, Blossom";
-            else if (hour < 18) label.innerText = "Good Afternoon, Blossom";
-            else label.innerText = "Good Evening, Blossom";
-        };
-
-        /**
-         * 3. AUTHENTICATION & SCANNER ENGINE
-         */
-        const authInput = document.getElementById('vault-key');
-        authInput.addEventListener('input', (e) => {
-            const val = e.target.value;
-            if (val === '2025' || val === '2026') {
-                authInput.blur();
-                performBiometricScan(() => {
-                    transitionVault(val === '2025' ? 'vault-primary' : 'vault-secondary');
+            /**
+             * EVENT ARCHITECTURE
+             */
+            bindGlobalEvents() {
+                const input = document.getElementById('pin-field');
+                
+                // Auth Trigger
+                input.addEventListener('input', (e) => {
+                    const value = e.target.value;
+                    if (value === '2025' || value === '2026') {
+                        this.executeAuthSequence(value);
+                    }
                 });
-            }
-        });
 
-        function performBiometricScan(callback) {
-            const scanner = document.getElementById('biometric-scanner');
-            scanner.style.display = 'block';
-            scanner.style.animation = 'laser-scan 1.4s forwards';
-            
-            // Visual "Haptic" Feedback
-            document.getElementById('auth-panel').classList.add('shake');
-            
-            setTimeout(() => {
-                document.getElementById('auth-panel').classList.remove('shake');
-                document.getElementById('master-auth').style.opacity = '0';
-                document.getElementById('master-auth').style.transform = 'translateY(-100%)';
-                setTimeout(callback, 800);
-            }, 1400);
-        }
+                // Visual Interaction
+                window.addEventListener('mousemove', (e) => {
+                    document.body.style.setProperty('--mx', `${e.clientX}px`);
+                    document.body.style.setProperty('--my', `${e.clientY}px`);
+                });
 
-        function transitionVault(id) {
-            const target = document.getElementById(id);
-            target.classList.add('active');
-            if (id === 'vault-secondary') loadDeepVaultData();
-            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#ffffff', '#ff9a9e'] });
-        }
+                // Auto-Focus
+                window.addEventListener('click', () => {
+                    if (!this.state.isAuthorized) input.focus();
+                });
+            },
 
-        /**
-         * 4. NARRATIVE & STORYTELLING ENGINE
-         */
-        const script = [
-            "Hi Blossom...",
-            "They say digital things have no soul.",
-            "But I think this space is different.",
-            "Because your frequency is woven into the code.",
-            "Thank you for being a constant light. 🌸"
-        ];
+            updateGreeting() {
+                const hour = new Date().getHours();
+                const target = document.getElementById('time-greeting');
+                if (hour < 12) target.innerText = "Good Morning, Blossom";
+                else if (hour < 18) target.innerText = "Good Afternoon, Blossom";
+                else target.innerText = "Good Evening, Blossom";
+            },
 
-        document.getElementById('trigger-narrative').onclick = function() {
-            this.classList.add('hidden');
-            document.getElementById('ambient-audio').volume = 0.3;
-            document.getElementById('ambient-audio').play();
-            
-            let i = 0;
-            const engine = document.getElementById('narrative-engine');
-            const run = () => {
-                if (i < script.length) {
-                    engine.style.opacity = 0;
-                    setTimeout(() => {
-                        engine.innerText = script[i];
-                        engine.style.opacity = 1;
-                        i++;
-                        setTimeout(run, 3500);
-                    }, 600);
-                } else {
-                    engine.innerHTML = "<span class='blossom-script'>The floor is yours.</span>";
-                    document.getElementById('post-narrative-ui').classList.remove('hidden');
-                    initSignatureEngine();
-                }
-            };
-            run();
-        };
+            /**
+             * NEURAL PHYSICS ENGINE
+             */
+            startNeuralEngine() {
+                const canvas = document.getElementById('neural-engine');
+                const ctx = canvas.getContext('2d');
+                let nodes = [];
 
-        /**
-         * 5. SIGNATURE & DATA PERSISTENCE
-         */
-        function initSignatureEngine() {
-            const pad = document.getElementById('signature-pad');
-            const ctx = pad.getContext('2d');
-            pad.width = pad.offsetWidth;
-            pad.height = pad.offsetHeight;
-            
-            let active = false;
-            const getPos = (e) => {
-                const rect = pad.getBoundingClientRect();
-                return {
-                    x: (e.clientX || e.touches[0].clientX) - rect.left,
-                    y: (e.clientY || e.touches[0].clientY) - rect.top
+                const resize = () => {
+                    canvas.width = window.innerWidth;
+                    canvas.height = window.innerHeight;
                 };
-            };
+                window.onresize = resize;
+                resize();
 
-            const start = (e) => { active = true; ctx.beginPath(); const p = getPos(e); ctx.moveTo(p.x, p.y); };
-            const move = (e) => { 
-                if (!active) return; 
-                const p = getPos(e); 
-                ctx.lineTo(p.x, p.y); 
-                ctx.strokeStyle = "#111111"; 
-                ctx.lineWidth = 3; 
-                ctx.lineCap = 'round'; 
-                ctx.stroke(); 
-            };
-            const stop = () => active = false;
+                class Node {
+                    constructor() {
+                        this.init();
+                    }
+                    init() {
+                        this.x = Math.random() * canvas.width;
+                        this.y = Math.random() * canvas.height;
+                        this.vx = (Math.random() - 0.5) * 0.5;
+                        this.vy = (Math.random() - 0.5) * 0.5;
+                        this.r = Math.random() * 2 + 0.5;
+                    }
+                    update() {
+                        this.x += this.vx;
+                        this.y += this.vy;
+                        if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+                        if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+                    }
+                    draw() {
+                        ctx.beginPath();
+                        ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+                        ctx.fillStyle = "rgba(255, 255, 255, 0.25)";
+                        ctx.fill();
+                    }
+                }
 
-            pad.addEventListener('mousedown', start);
-            pad.addEventListener('touchstart', start);
-            window.addEventListener('mousemove', move);
-            window.addEventListener('touchmove', move);
-            window.addEventListener('mouseup', stop);
-            window.addEventListener('touchend', stop);
-        }
+                for (let i = 0; i < 70; i++) nodes.push(new Node());
 
-        function handleSync(key, inputId) {
-            const val = document.getElementById(inputId).value;
-            localStorage.setItem(key, val);
-            if (key === 'blossom_reply') {
-                localStorage.setItem('blossom_seal', document.getElementById('signature-pad').toDataURL());
+                const frame = () => {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    
+                    for (let i = 0; i < nodes.length; i++) {
+                        for (let j = i + 1; j < nodes.length; j++) {
+                            const dx = nodes[i].x - nodes[j].x;
+                            const dy = nodes[i].y - nodes[j].y;
+                            const dist = Math.sqrt(dx * dx + dy * dy);
+                            if (dist < 160) {
+                                ctx.beginPath();
+                                ctx.moveTo(nodes[i].x, nodes[i].y);
+                                ctx.lineTo(nodes[j].x, nodes[j].y);
+                                ctx.strokeStyle = `rgba(255, 255, 255, ${0.15 * (1 - dist / 160)})`;
+                                ctx.lineWidth = 0.5;
+                                ctx.stroke();
+                            }
+                        }
+                        nodes[i].update();
+                        nodes[i].draw();
+                    }
+                    requestAnimationFrame(frame);
+                };
+                frame();
+            },
+
+            /**
+             * AUTHORIZATION SEQUENCE
+             */
+            executeAuthSequence(key) {
+                this.state.isAuthorized = true;
+                this.pushLog(`Key Detected: [${key}]`);
+                this.pushLog("Starting Biometric Sweep...");
+
+                const scanner = document.getElementById('laser-scanner-line');
+                const authCard = document.getElementById('auth-panel');
+                
+                // Hardware visual feedback
+                scanner.style.display = 'block';
+                scanner.style.animation = 'scan-cycle 1.6s forwards';
+                authCard.classList.add('haptic-vibrate');
+
+                setTimeout(() => {
+                    this.pushLog("Access Granted. Handshake Verified.");
+                    authCard.classList.remove('haptic-vibrate');
+                    
+                    document.getElementById('main-gate').style.opacity = '0';
+                    document.getElementById('main-gate').style.transform = 'translateY(-100%) scale(0.9)';
+                    
+                    setTimeout(() => {
+                        this.transitionToVault(key === '2025' ? 'vault-blossom' : 'vault-preston');
+                    }, 1000);
+                }, 1600);
+            },
+
+            transitionToVault(vaultId) {
+                const vault = document.getElementById(vaultId);
+                vault.classList.add('active');
+                this.state.activeVault = vaultId;
+                
+                this.pushLog(`Linked to Secure Bridge: ${vaultId}`);
+                
+                if (vaultId === 'vault-preston') {
+                    this.loadStoredBridgeData();
+                }
+
+                // Celebrate Connection
+                confetti({
+                    particleCount: 160,
+                    spread: 80,
+                    origin: { y: 0.65 },
+                    colors: ['#ffffff', '#ff9a9e', '#fdfcfb']
+                });
+            },
+
+            /**
+             * NARRATIVE ENGINE (Blossom Journey)
+             */
+            startNarrative() {
+                const story = [
+                    "Hi Blossom...",
+                    "Welcome to the Preston Terminal.",
+                    "This space exists only for us.",
+                    "A direct encrypted channel, free from the noise.",
+                    "You are a constant light in the code.",
+                    "Thank you for being you. 🌸"
+                ];
+
+                const btn = document.getElementById('init-narrative-btn');
+                const consoleText = document.getElementById('narrative-console');
+                const audio = document.getElementById('terminal-ambient');
+
+                btn.style.display = 'none';
+                audio.volume = 0.3;
+                audio.play();
+
+                const typeNextLine = () => {
+                    if (this.state.narrativeIndex < story.length) {
+                        consoleText.style.opacity = 0;
+                        setTimeout(() => {
+                            consoleText.innerText = story[this.state.narrativeIndex];
+                            consoleText.style.opacity = 1;
+                            this.state.narrativeIndex++;
+                            setTimeout(typeNextLine, 3800);
+                        }, 800);
+                    } else {
+                        consoleText.innerHTML = "<span class='blossom-script'>The floor is yours.</span>";
+                        document.getElementById('blossom-active-interface').classList.remove('hidden');
+                        
+                        // Check for incoming data
+                        const incoming = localStorage.getItem('him_msg');
+                        if (incoming) {
+                            document.getElementById('remote-transmission').classList.remove('hidden');
+                            document.getElementById('transmission-text').innerText = `"${incoming}"`;
+                        }
+
+                        this.initSignatureCanvas();
+                    }
+                };
+                typeNextLine();
+            },
+
+            /**
+             * SIGNATURE ARCHITECTURE
+             */
+            initSignatureCanvas() {
+                const canvas = document.getElementById('sig-surface');
+                const ctx = canvas.getContext('2d');
+                
+                const resize = () => {
+                    canvas.width = canvas.offsetWidth;
+                    canvas.height = canvas.offsetHeight;
+                };
+                resize();
+
+                let isDrawing = false;
+                const getCoords = (e) => {
+                    const rect = canvas.getBoundingClientRect();
+                    return {
+                        x: (e.clientX || e.touches[0].clientX) - rect.left,
+                        y: (e.clientY || e.touches[0].clientY) - rect.top
+                    };
+                };
+
+                const startDraw = (e) => {
+                    isDrawing = true;
+                    ctx.beginPath();
+                    const p = getCoords(e);
+                    ctx.moveTo(p.x, p.y);
+                };
+
+                const drawing = (e) => {
+                    if (!isDrawing) return;
+                    const p = getCoords(e);
+                    ctx.lineTo(p.x, p.y);
+                    ctx.strokeStyle = "#111111";
+                    ctx.lineWidth = 3.5;
+                    ctx.lineCap = "round";
+                    ctx.lineJoin = "round";
+                    ctx.stroke();
+                };
+
+                const stopDraw = () => isDrawing = false;
+
+                canvas.addEventListener('mousedown', startDraw);
+                canvas.addEventListener('touchstart', startDraw);
+                window.addEventListener('mousemove', drawing);
+                window.addEventListener('touchmove', drawing);
+                window.addEventListener('mouseup', stopDraw);
+                window.addEventListener('touchend', stopDraw);
+            },
+
+            /**
+             * DATA PERSISTENCE LAYER
+             */
+            synchronize(key, inputId) {
+                const data = document.getElementById(inputId).value;
+                if (!data) return alert("System requires a frequency input.");
+
+                localStorage.setItem(key, data);
+                
+                if (key === 'blossom_msg') {
+                    const signatureData = document.getElementById('sig-surface').toDataURL();
+                    localStorage.setItem('blossom_sig_node', signatureData);
+                }
+
+                this.pushLog(`Synchronizing frequency: [${key}]`);
+                
+                confetti({
+                    particleCount: 100,
+                    scalar: 0.85,
+                    origin: { y: 0.8 }
+                });
+
+                alert("Terminal Synchronized. Data Transmitted.");
+            },
+
+            loadStoredBridgeData() {
+                const message = localStorage.getItem('blossom_msg');
+                const signature = localStorage.getItem('blossom_sig_node');
+                const myLast = localStorage.getItem('him_msg');
+
+                if (message) {
+                    document.getElementById('bridge-data-output').innerText = `"${message}"`;
+                }
+                
+                if (signature) {
+                    const playback = document.getElementById('sig-playback-node');
+                    playback.src = signature;
+                    playback.style.display = 'block';
+                }
+
+                if (myLast) {
+                    document.getElementById('preston-push-data').value = myLast;
+                }
             }
-            confetti({ particleCount: 60, scalar: 0.8 });
-            alert("Vault Synchronized. Data Locked.");
-        }
-
-        function loadDeepVaultData() {
-            const reply = localStorage.getItem('blossom_reply');
-            if (reply) document.getElementById('remote-data-display').innerText = `"${reply}"`;
-            const note = localStorage.getItem('deep_note');
-            if (note) document.getElementById('private-note-input').value = note;
-        }
-
-        // STARTUP
-        window.onload = () => {
-            initParticles();
-            setGreeting();
-            // Safety: Ensure input is clickable
-            document.getElementById('vault-key').focus();
         };
+
+        /**
+         * BOOT KERNEL
+         */
+        window.addEventListener('load', () => Controller.init());
+        document.getElementById('init-narrative-btn').onclick = () => Controller.startNarrative();
+
     </script>
 </body>
 </html>
