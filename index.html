@@ -5,41 +5,41 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>Preston hates Blossom👀</title>
+    <title>Preston Terminal 🦾 | Prime Legacy v9.0</title>
     
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
     
     <style>
-        /* PRESTON TERMINAL: PRIME RESPONSIVE ARCHITECTURE
-           Version: 5.0.2
-           Build: April 2026
-           Design System: Obsidian & Blossom Fluid
+        /* PRESTON TERMINAL DESIGN SYSTEM
+           ---------------------------------------------------------
+           Version: 9.0.2 (Build 2026.04)
+           Concept: Obsidian Glass & Blossom Glow
+           Architecture: Fluid Responsive Grid
+           ---------------------------------------------------------
         */
+
         @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700;800&family=JetBrains+Mono:wght@400&display=swap');
 
         :root {
-            /* COLOR TOKENS (OKLCH for superior gradients) 
-            */
-            --accent: oklch(75% 0.18 350);
-            --accent-mute: oklch(75% 0.18 350 / 0.15);
-            --bg-deep: oklch(5% 0.01 260);
-            --bg-glass: oklch(100% 0 0 / 0.04);
-            --border-glow: oklch(100% 0 0 / 0.15);
-            --text-primary: oklch(98% 0.01 260);
-            --text-dim: oklch(60% 0.02 260);
+            /* COLOR ENGINE (OKLCH FOR OPTICAL PURITY) */
+            --accent-primary: oklch(75% 0.18 350);
+            --accent-soft: oklch(75% 0.18 350 / 0.15);
+            --bg-base: oklch(5% 0.01 260);
+            --glass-surface: oklch(100% 0 0 / 0.05);
+            --border-subtle: oklch(100% 0 0 / 0.12);
+            --text-high: oklch(98% 0.01 260);
+            --text-muted: oklch(60% 0.02 260);
             
-            /* MOTION TOKENS 
-            */
-            --ease-fluid: cubic-bezier(0.19, 1, 0.22, 1);
-            --transition-speed: 0.8s;
+            /* MOTION TOKENS */
+            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+            --transition-speed: 1.2s;
             
-            /* RESPONSIVE SPACING 
-            */
-            --safe-area: 20px;
+            /* RESPONSIVE BREAKPOINTS */
+            --safe-area-inset: 20px;
         }
 
         /* -------------------------------------------------------------------------
-           1. CORE RESET & RESPONSIVE FOUNDATION
+           1. CORE RESET & VIEWPORT CALIBRATION
            ------------------------------------------------------------------------- */
         * {
             margin: 0;
@@ -51,12 +51,11 @@
 
         html, body {
             width: 100%;
-            height: 100%;
-            height: -webkit-fill-available; /* Fix for mobile browser bars */
-            background-color: var(--bg-deep);
+            height: 100dvh; /* Dynamic viewport height for mobile browsers */
+            background-color: var(--bg-base);
             font-family: 'Plus Jakarta Sans', sans-serif;
+            color: var(--text-high);
             overflow: hidden;
-            color: var(--text-primary);
             user-select: none;
             touch-action: manipulation;
         }
@@ -65,267 +64,267 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: var(--safe-area);
+            padding: var(--safe-area-inset);
+            perspective: 1000px; /* For 3D depth effects */
         }
 
         /* -------------------------------------------------------------------------
-           2. SYSTEM BACKGROUND ENGINE (PARTICLE NEURAL NET)
+           2. VECTOR PHYSICS COMPONENT (NEURAL BACKGROUND)
            ------------------------------------------------------------------------- */
-        #particle-engine {
+        #physics-canvas {
             position: fixed;
             inset: 0;
             z-index: 1;
+            opacity: 0.55;
             pointer-events: none;
-            opacity: 0.4;
         }
 
-        #fluid-spotlight {
+        #fluid-overlay {
             position: fixed;
             inset: 0;
             z-index: 2;
             pointer-events: none;
             background: radial-gradient(
-                circle 400px at var(--mx, 50%) var(--my, 50%),
-                var(--accent-mute),
-                transparent 80%
+                circle 450px at var(--mx, 50%) var(--my, 50%),
+                var(--accent-soft),
+                transparent 85%
             );
         }
 
         /* -------------------------------------------------------------------------
-           3. TERMINAL DIAGNOSTIC LOGS
+           3. SYSTEM DIAGNOSTIC INTERFACE
            ------------------------------------------------------------------------- */
-        .diag-terminal {
+        .system-logs {
             position: fixed;
-            bottom: 20px;
-            left: 20px;
+            top: 30px;
+            left: 30px;
+            z-index: 1000;
             font-family: 'JetBrains Mono', monospace;
-            font-size: clamp(0.5rem, 2vw, 0.65rem);
-            color: var(--accent);
-            z-index: 999;
-            opacity: 0.7;
+            font-size: clamp(8px, 1.2vw, 10px);
+            color: var(--accent-primary);
+            opacity: 0.6;
             pointer-events: none;
-            line-height: 1.5;
-            max-width: 80vw;
+            text-transform: uppercase;
+            letter-spacing: 2.5px;
+            line-height: 1.8;
         }
 
-        #scanning-laser {
+        .os-status-bar {
             position: fixed;
-            top: -10px;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1000;
+            font-family: 'JetBrains Mono';
+            font-size: 9px;
+            letter-spacing: 3px;
+            color: var(--text-muted);
+        }
+
+        #scanline {
+            position: fixed;
+            top: 0;
             left: 0;
             width: 100%;
-            height: 3px;
-            background: var(--accent);
-            box-shadow: 0 0 25px var(--accent);
-            z-index: 1001;
+            height: 4px;
+            background: var(--accent-primary);
+            box-shadow: 0 0 30px var(--accent-primary);
+            z-index: 1200;
             display: none;
+            pointer-events: none;
         }
 
         /* -------------------------------------------------------------------------
-           4. AUTHENTICATION (GATEWAY)
+           4. AUTHENTICATION MODULE (THE GATE)
            ------------------------------------------------------------------------- */
-        .gate-wrapper {
+        .auth-overlay {
             position: fixed;
             inset: 0;
-            z-index: 900;
+            z-index: 999;
+            background: var(--bg-base);
             display: flex;
             justify-content: center;
             align-items: center;
-            background: var(--bg-deep);
-            transition: transform 1.8s var(--ease-fluid), opacity 1.2s ease;
-            padding: var(--safe-area);
+            padding: var(--safe-area-inset);
+            transition: opacity 1.5s var(--ease-out-expo), transform 1.5s var(--ease-out-expo);
         }
 
-        .auth-card {
-            background: var(--bg-glass);
+        .auth-shield {
+            background: var(--glass-surface);
             backdrop-filter: blur(80px);
             -webkit-backdrop-filter: blur(80px);
-            border: 1px solid var(--border-glow);
-            border-radius: clamp(30px, 10vw, 60px);
-            padding: clamp(2rem, 8vw, 5rem);
+            border: 1px solid var(--border-subtle);
+            border-radius: clamp(40px, 10vw, 60px);
+            padding: clamp(3.5rem, 12vw, 6rem) 2rem;
             width: min(100%, 480px);
             text-align: center;
-            box-shadow: 0 40px 80px -20px rgba(0,0,0,0.8);
-            position: relative;
+            box-shadow: 0 80px 160px -40px rgba(0,0,0,0.9);
+            transform: translateZ(50px);
         }
 
-        .auth-label {
+        .shield-label {
             display: block;
-            font-size: clamp(0.6rem, 2vw, 0.75rem);
-            letter-spacing: 6px;
-            color: var(--accent);
+            font-size: 0.7rem;
+            letter-spacing: 7px;
+            color: var(--accent-primary);
             text-transform: uppercase;
             font-weight: 800;
-            margin-bottom: 2rem;
+            margin-bottom: 2.5rem;
         }
 
-        .pin-field {
+        .input-pin {
             all: unset;
             width: 100%;
-            font-size: clamp(3rem, 12vw, 5rem);
-            letter-spacing: clamp(15px, 5vw, 25px);
+            font-size: clamp(3.5rem, 15vw, 6rem);
+            letter-spacing: clamp(15px, 6vw, 30px);
             font-weight: 800;
             text-align: center;
-            border-bottom: 2px solid var(--border-glow);
-            padding-bottom: 10px;
-            transition: border-color 0.4s;
+            border-bottom: 2px solid var(--border-subtle);
+            margin: 2rem 0;
+            transition: border-color 0.5s var(--ease-out-expo);
+            color: var(--text-high);
         }
 
-        .pin-field:focus {
-            border-color: var(--accent);
+        .input-pin:focus {
+            border-color: var(--accent-primary);
         }
 
         /* -------------------------------------------------------------------------
-           5. RESPONSIVE VAULT CONTAINERS
+           5. VAULT VIEWPORTS (RESPONSIVE ARCHITECTURE)
            ------------------------------------------------------------------------- */
-        .vault-viewport {
+        .viewport-layer {
             position: relative;
             z-index: 100;
-            width: min(100%, 600px);
+            width: min(100%, 680px);
+            height: 90vh;
             display: none;
             opacity: 0;
-            transform: translateY(30px);
-            height: 90vh;
+            transform: translateY(60px) rotateX(10deg);
             overflow-y: auto;
+            padding: 20px;
             scrollbar-width: none;
             -ms-overflow-style: none;
-            padding-bottom: 40px;
         }
 
-        .vault-viewport::-webkit-scrollbar { display: none; }
+        .viewport-layer::-webkit-scrollbar { display: none; }
 
-        .vault-viewport.visible {
+        .viewport-layer.active {
             display: block;
-            animation: slideUp 1.2s var(--ease-fluid) forwards;
+            animation: viewportDeploy 1.6s var(--ease-out-expo) forwards;
         }
 
-        @keyframes slideUp {
-            to { opacity: 1; transform: translateY(0); }
+        @keyframes viewportDeploy {
+            to { opacity: 1; transform: translateY(0) rotateX(0); }
         }
 
-        .panel-glass {
-            background: var(--bg-glass);
+        .bento-card {
+            background: var(--glass-surface);
             backdrop-filter: blur(50px);
             -webkit-backdrop-filter: blur(50px);
-            border: 1px solid var(--border-glow);
-            border-radius: clamp(24px, 6vw, 40px);
-            padding: clamp(1.5rem, 5vw, 3rem);
-            margin-bottom: 1.5rem;
+            border: 1px solid var(--border-subtle);
+            border-radius: clamp(30px, 6vw, 45px);
+            padding: clamp(1.5rem, 6vw, 3.5rem);
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
         }
 
         /* -------------------------------------------------------------------------
-           6. SONIC & VISUAL ELEMENTS
+           6. NARRATIVE SCRIPT ENGINE
            ------------------------------------------------------------------------- */
-        #narration-box {
-            min-height: 220px;
+        #narrative-engine {
+            min-height: 320px;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
             text-align: center;
-            font-size: clamp(1.2rem, 4vw, 1.7rem);
+            font-size: clamp(1.3rem, 5vw, 2rem);
             font-weight: 200;
-            line-height: 1.6;
-            padding: 10px;
+            line-height: 1.8;
+            padding: 15px;
         }
 
-        .script-text {
+        .blossom-handwriting {
             font-family: 'Dancing Script', cursive;
-            font-size: clamp(2.5rem, 8vw, 3.5rem);
-            color: var(--accent);
+            font-size: clamp(3rem, 12vw, 4.5rem);
+            color: var(--accent-primary);
+            margin-top: 15px;
+            display: block;
         }
 
+        /* -------------------------------------------------------------------------
+           7. INTERACTIVE CONTROL TOKENS
+           ------------------------------------------------------------------------- */
         .btn-action {
             all: unset;
             display: block;
             width: 100%;
-            padding: 1.2rem 0;
-            background: var(--text-primary);
-            color: var(--bg-deep);
-            border-radius: 20px;
+            padding: 1.5rem 0;
+            background: var(--text-high);
+            color: var(--bg-base);
+            border-radius: 22px;
             font-weight: 800;
             text-align: center;
             cursor: pointer;
-            transition: 0.4s;
+            transition: transform 0.4s, background 0.4s;
             text-transform: uppercase;
-            letter-spacing: 2px;
             font-size: 0.8rem;
-            margin-top: 1.5rem;
+            letter-spacing: 4px;
+            margin-top: 2rem;
         }
 
         .btn-action:active { transform: scale(0.96); }
+        .btn-action.ghost { background: transparent; color: var(--text-high); border: 1px solid var(--border-subtle); }
+        .btn-action.rec-mode { background: #ff3e3e; animation: pulseRed 1s infinite; border: none; }
 
-        .btn-action.ghost {
-            background: transparent;
-            color: var(--text-primary);
-            border: 1px solid var(--border-glow);
-        }
+        @keyframes pulseRed { 50% { opacity: 0.6; } }
 
-        .btn-action.active-rec {
-            background: #ff4b2b;
-            color: white;
-            animation: pulse-rec 1s infinite;
-        }
-
-        @keyframes pulse-rec {
-            50% { opacity: 0.6; }
-        }
-
-        .sig-canvas {
+        .signature-pad {
             background: #ffffff;
             width: 100%;
-            height: clamp(180px, 40vw, 240px);
-            border-radius: 24px;
+            height: clamp(200px, 40vh, 280px);
+            border-radius: 30px;
             touch-action: none;
-            margin: 1.5rem 0;
+            margin: 2rem 0;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.1);
         }
 
-        .text-input-premium {
+        .text-input-field {
             width: 100%;
-            height: 120px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--border-glow);
-            border-radius: 20px;
-            padding: 1.2rem;
-            color: var(--text-primary);
+            height: 150px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid var(--border-subtle);
+            border-radius: 24px;
+            padding: 1.5rem;
+            color: var(--text-high);
             font-family: inherit;
             resize: none;
-            font-size: 1rem;
+            font-size: 1.1rem;
+            transition: border-color 0.4s;
         }
 
+        .text-input-field:focus { border-color: var(--accent-primary); }
+
         /* -------------------------------------------------------------------------
-           7. RESPONSIVE GRID NODES
+           8. DATA SYNC VISUALIZER
            ------------------------------------------------------------------------- */
-        .node-card {
-            background: rgba(0,0,0,0.3);
-            border: 1px solid var(--border-glow);
-            border-radius: 28px;
+        .packet-display {
+            font-size: 10px;
+            word-break: break-all;
+            color: var(--accent-primary);
+            background: rgba(0,0,0,0.7);
             padding: 20px;
-            margin-bottom: 1rem;
+            border-radius: 20px;
+            margin-top: 20px;
+            display: none;
+            font-family: 'JetBrains Mono';
+            border: 1px dashed var(--accent-primary);
+            max-height: 150px;
+            overflow-y: auto;
         }
 
-        .node-header {
-            font-size: 0.6rem;
-            font-weight: 800;
-            color: var(--accent);
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            margin-bottom: 12px;
-            display: block;
-        }
-
-        /* -------------------------------------------------------------------------
-           8. SYSTEM ANIMATIONS
-           ------------------------------------------------------------------------- */
-        @keyframes laser-sweep {
-            0% { top: 0%; opacity: 1; }
-            100% { top: 100%; opacity: 0; }
-        }
-
-        .vibrate { animation: shake 0.12s linear infinite; }
-        @keyframes shake {
-            0% { transform: translate(1px, 1px); }
-            50% { transform: translate(-1px, -1px); }
-            100% { transform: translate(1px, -1px); }
-        }
+        .shake-effect { animation: shakeFrame 0.12s linear infinite; }
+        @keyframes shakeFrame { 0% { transform: translate(1px, 1px); } 50% { transform: translate(-1px, -1px); } 100% { transform: translate(1px, -1px); } }
 
         .hidden { display: none !important; }
 
@@ -333,412 +332,448 @@
 </head>
 <body>
 
-    <canvas id="particle-engine"></canvas>
-    <div id="fluid-spotlight"></div>
-    <div id="scanning-laser"></div>
+    <canvas id="physics-canvas"></canvas>
+    <div id="fluid-overlay"></div>
+    <div id="scanline"></div>
     
-    <div class="diag-terminal" id="sys-logs">
-        [ PRESTON PRIME v5.0.2 ]<br>
-        [ KERNEL: RESPONSIVE_CORE ]<br>
-        [ STATUS: WAITING_FOR_PIN ]
+    <div class="system-logs" id="kernel-logs">
+        [ KERNEL INITIALIZED ]<br>
+        [ STATUS: STANDBY ]
     </div>
 
-    <div class="gate-wrapper" id="auth-gate">
-        <div class="auth-card" id="gate-panel">
-            <span class="auth-label" id="greet-label">Security Protocol</span>
-            <input type="password" class="pin-field" id="pin-input" maxlength="4" placeholder="••••" inputmode="numeric" autofocus>
-            <p style="font-size: 0.55rem; color: var(--text-dim); margin-top: 2.5rem; letter-spacing: 4px;">
-                SECURE BRIDGE FOR PRESTON & BLOSSOM 🦾
+    <div class="os-status-bar">
+        PRESTON_PRIME_OS // CORE_REVISION_9.0
+    </div>
+
+    <div class="auth-overlay" id="security-gate">
+        <div class="auth-shield" id="shield-container">
+            <span class="shield-label" id="time-context">Access Encrypted Link</span>
+            <input type="password" class="input-pin" id="pin-field" maxlength="4" placeholder="••••" inputmode="numeric" autofocus>
+            <p style="font-size: 0.65rem; color: var(--text-muted); letter-spacing: 6px; text-transform: uppercase;">
+                Quantum Handshake Protocol 🦾
             </p>
         </div>
     </div>
 
-    <audio id="bg-audio" loop><source src="https://cdn.pixabay.com/audio/2022/05/27/audio_1808f3030c.mp3" type="audio/mpeg"></audio>
+    <audio id="ambient-audio" loop>
+        <source src="https://cdn.pixabay.com/audio/2022/05/27/audio_1808f3030c.mp3" type="audio/mpeg">
+    </audio>
 
-    <div class="vault-viewport" id="vault-2025">
-        <div class="panel-glass">
-            <div id="narration-box">Establishing Encrypted Link...<br>Please standby for handshake.</div>
-            <button class="btn-action" id="start-btn">Initiate Connection</button>
+    <div class="viewport-layer" id="v-2025">
+        <div class="bento-card">
+            <div id="narrative-engine">Handshake in progress...<br>Verify user biometric sequence.</div>
+            <button class="btn-action" id="boot-btn">Synchronize Frequency</button>
             
-            <div id="blossom-ui" class="hidden">
-                <div id="inbox-node" class="node-card hidden" style="border-color: var(--accent);">
-                    <span class="node-header">Frequency from Preston</span>
-                    <p id="inbox-text" style="font-style: italic; line-height: 1.5;"></p>
-                    <div id="inbox-audio-box" class="hidden" style="margin-top: 12px;">
-                        <audio id="inbox-audio" controls style="width: 100%; filter: invert(1);"></audio>
-                    </div>
+            <div id="blossom-interface" class="hidden">
+                <div id="preston-inbox" class="hidden" style="margin-bottom: 2.5rem; border-left: 4px solid var(--accent-primary); padding-left: 25px;">
+                    <span class="shield-label" style="margin-bottom: 12px;">Transmission from Preston</span>
+                    <p id="inbox-msg-content" style="font-style: italic; line-height: 1.8; opacity: 0.9;"></p>
+                    <audio id="inbox-audio-player" controls style="width: 100%; margin-top: 20px; filter: invert(1);"></audio>
                 </div>
 
-                <span class="node-header">Signature Authenticator</span>
-                <canvas id="sig-pad-2025" class="sig-canvas"></canvas>
+                <span class="shield-label">Cryptographic Signature</span>
+                <canvas id="sig-canvas-2025" class="signature-pad"></canvas>
                 
-                <span class="node-header">Voice Frequency Record</span>
-                <button class="btn-action ghost" id="rec-btn-2025" onclick="Kernel.Voice.toggle('2025')">🎙️ Hold to Speak</button>
-                <div id="preview-2025" class="hidden" style="margin-top: 10px;">
-                    <audio id="audio-preview-2025" controls style="width: 100%; filter: invert(1);"></audio>
-                </div>
+                <span class="shield-label">Sonic Frequency Buffer</span>
+                <button class="btn-action ghost" id="rec-btn-2025" onclick="Kernel.Sonic.toggle('2025')">🎙️ Open Mic Frequency</button>
+                <audio id="prev-2025" controls style="width: 100%; display: none; margin-top: 20px; filter: invert(1);"></audio>
 
-                <span class="node-header">Text Frequency Update</span>
-                <textarea class="text-input-premium" id="text-2025" placeholder="Your message to Preston..."></textarea>
+                <span class="shield-label">Deep Text Encryption</span>
+                <textarea class="text-input-field" id="msg-2025" placeholder="Your reply to the Preston Terminal..."></textarea>
                 
-                <button class="btn-action" style="background: var(--accent);" onclick="Kernel.Data.commit('2025')">Transmit & Close ❤️</button>
+                <button class="btn-action" style="background: var(--accent-primary);" onclick="Kernel.Sync.package('2025')">Generate & Copy Quantum Packet</button>
+                <div id="packet-box-2025" class="packet-display"></div>
             </div>
         </div>
     </div>
 
-    <div class="vault-viewport" id="vault-2026">
-        <div class="panel-glass">
-            <h1 class="script-text" style="margin-bottom: 1.5rem;">Bridge Master</h1>
-            
-            <div class="node-card">
-                <span class="node-header">Incoming from Blossom</span>
-                <p id="view-text-blossom" style="font-style: italic; opacity: 0.8;">No signal found.</p>
-                <img id="view-sig-blossom" style="width: 100%; border-radius: 18px; background: white; padding: 12px; display: none; margin-top: 15px;">
-                <div id="view-audio-blossom" class="hidden" style="margin-top: 15px;">
-                    <audio id="audio-play-blossom" controls style="width: 100%; filter: invert(1);"></audio>
-                </div>
-            </div>
-
-            <div class="node-card">
-                <span class="node-header">Broadcast New Frequency</span>
-                <button class="btn-action ghost" id="rec-btn-2026" onclick="Kernel.Voice.toggle('2026')">🎙️ Record Voice Note</button>
-                <div id="preview-2026" class="hidden" style="margin-top: 10px;">
-                    <audio id="audio-preview-2026" controls style="width: 100%; filter: invert(1);"></audio>
-                </div>
-                <textarea class="text-input-premium" id="text-2026" style="margin-top: 15px;" placeholder="What should she see next?"></textarea>
-                <button class="btn-action" style="background: var(--accent);" onclick="Kernel.Data.commit('2026')">Update Terminal</button>
-            </div>
-
-            <button class="btn-action ghost" onclick="location.reload()">Kill Frequency</button>
+    <div class="viewport-layer" id="v-2026">
+        <div class="bento-card">
+            <span class="shield-label">Incoming Quantum Link</span>
+            <textarea class="text-input-field" id="import-buffer" placeholder="Paste Blossom's transmission packet here..."></textarea>
+            <button class="btn-action" onclick="Kernel.Sync.unpack()">Verify & Link</button>
         </div>
+
+        <div class="bento-card hidden" id="decrypted-result">
+            <span class="shield-label">Decrypted Signal Data</span>
+            <p id="res-msg-text" style="font-style: italic; font-size: 1.4rem; margin-bottom: 2rem;"></p>
+            <img id="res-sig-img" style="width: 100%; border-radius: 25px; background: white; display: none; margin-bottom: 2rem; padding: 10px;">
+            <audio id="res-audio-player" controls style="width: 100%; filter: invert(1);"></audio>
+        </div>
+        
+        <div class="bento-card">
+            <span class="shield-label">Construct Broadcast</span>
+            <button class="btn-action ghost" id="rec-btn-2026" onclick="Kernel.Sonic.toggle('2026')">🎙️ Record New Frequency</button>
+            <audio id="prev-2026" controls style="width: 100%; display: none; margin-top: 20px; filter: invert(1);"></audio>
+            <textarea class="text-input-field" id="msg-2026" style="margin-top: 2rem;" placeholder="What should Blossom receive in her terminal?"></textarea>
+            <button class="btn-action" onclick="Kernel.Sync.package('2026')">Package Update</button>
+            <div id="packet-box-2026" class="packet-display"></div>
+        </div>
+
+        <button class="btn-action ghost" onclick="location.reload()">Terminate Session</button>
     </div>
 
     <script>
         /**
-         * KERNEL SYSTEM ARCHITECTURE
-         * A high-performance, responsive terminal management system.
+         * THE KERNEL OBJECT
+         * Manages Hardware, Encryption, UI, and Sonic modules.
          */
         const Kernel = {
             
-            settings: {
+            // 1. SYSTEM CONFIGURATION & REGISTRY
+            meta: {
+                version: "9.0.2",
                 logs: [],
-                keys: { a: "2025", b: "2026" }
+                keys: { 
+                    a: "2025", // Blossom Key
+                    b: "2026"  // Preston Key
+                },
+                diagnostics: {
+                    latency: 0,
+                    frameRate: 60,
+                    memUsage: "Normal"
+                }
             },
 
-            status: {
-                auth: false,
-                currentVault: null,
-                isMobile: /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
+            state: {
+                authenticated: false,
+                activeRole: null,
+                isHandheld: /iPhone|iPad|iPod|Android/i.test(navigator.userAgent),
+                voiceBufferReady: false
             },
 
-            /**
-             * 1. BOOT SEQUENCE
-             */
-            boot() {
-                this.log("Initializing Hardware...");
-                this.Graphics.start();
-                this.Voice.init();
-                this.updateClock();
-                this.bindInputs();
-                
-                // Track mouse/touch for spotlight effect
-                const handleMove = (e) => {
-                    const x = e.clientX || (e.touches ? e.touches[0].clientX : 0);
-                    const y = e.clientY || (e.touches ? e.touches[0].clientY : 0);
-                    document.body.style.setProperty('--mx', `${x}px`);
-                    document.body.style.setProperty('--my', `${y}px`);
-                };
-                window.addEventListener('mousemove', handleMove);
-                window.addEventListener('touchstart', handleMove);
-                
-                this.log("Preston Terminal: Prime Online.");
-            },
-
-            /**
-             * 2. LOGGING ENGINE
-             */
+            // 2. HARDWARE LOGGING SYSTEM
             log(msg) {
-                const el = document.getElementById('sys-logs');
-                const timestamp = new Date().toLocaleTimeString();
-                this.settings.logs.push(`[${timestamp}] ${msg}`);
-                if (this.settings.logs.length > 5) this.settings.logs.shift();
-                el.innerHTML = this.settings.logs.join('<br>');
+                const logEl = document.getElementById('kernel-logs');
+                const stamp = new Date().toLocaleTimeString();
+                const logEntry = `[${stamp}] SYSTEM::${msg}`;
+                
+                this.meta.logs.push(logEntry);
+                if (this.meta.logs.length > 8) this.meta.logs.shift();
+                
+                logEl.innerHTML = this.meta.logs.join('<br>');
+                console.log(logEntry);
             },
 
-            updateClock() {
+            // 3. MASTER BOOT SEQUENCE
+            boot() {
+                this.log("CORE_BOOT_INIT...");
+                this.PhysicsEngine.start();
+                this.bindEvents();
+                this.syncClock();
+                this.log("OS_KERNEL_READY.");
+            },
+
+            syncClock() {
                 const hour = new Date().getHours();
-                const greet = document.getElementById('greet-label');
-                if(hour < 12) greet.innerText = "Morning, Blossom";
-                else if(hour < 18) greet.innerText = "Afternoon, Blossom";
-                else greet.innerText = "Evening, Blossom";
+                const label = document.getElementById('time-context');
+                let greeting = "Terminal Locked";
+                
+                if(hour < 12) greeting = "Morning, Blossom";
+                else if(hour < 18) greeting = "Afternoon, Blossom";
+                else greeting = "Evening, Blossom";
+                
+                label.innerText = greeting;
+                this.log(`CLOCK_SYNC: ${greeting}`);
             },
 
-            /**
-             * 3. GRAPHICS MODULE (Responsive Particle Web)
-             */
-            Graphics: {
-                canvas: null,
-                ctx: null,
-                points: [],
-
+            // 4. PHYSICS & GRAPHICS ENGINE (VECTOR MATH)
+            PhysicsEngine: {
+                canvas: null, ctx: null, points: [],
+                
                 start() {
-                    this.canvas = document.getElementById('particle-engine');
+                    this.canvas = document.getElementById('physics-canvas');
                     this.ctx = this.canvas.getContext('2d');
                     this.resize();
-                    window.addEventListener('resize', () => this.resize());
+                    window.onresize = () => this.resize();
                     
-                    const count = Kernel.status.isMobile ? 40 : 80;
-                    for(let i=0; i<count; i++) this.points.push(this.newPoint());
+                    // Populate nodal network
+                    const density = Kernel.state.isHandheld ? 45 : 95;
+                    for(let i=0; i<density; i++) {
+                        this.points.push(this.spawnPoint());
+                    }
                     this.loop();
                 },
 
                 resize() {
                     this.canvas.width = window.innerWidth;
                     this.canvas.height = window.innerHeight;
+                    Kernel.log("DISPLAY_RESIZED");
                 },
 
-                newPoint() {
+                spawnPoint() {
                     return {
-                        x: Math.random() * window.innerWidth,
-                        y: Math.random() * window.innerHeight,
-                        vx: (Math.random() - 0.5) * 0.5,
-                        vy: (Math.random() - 0.5) * 0.5
+                        x: Math.random() * this.canvas.width,
+                        y: Math.random() * this.canvas.height,
+                        vx: (Math.random() - 0.5) * 0.48,
+                        vy: (Math.random() - 0.5) * 0.48,
+                        r: Math.random() * 2
                     };
                 },
 
                 loop() {
-                    this.ctx.clearRect(0,0,this.canvas.width,this.canvas.height);
+                    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                    
                     this.points.forEach((p, i) => {
+                        // Position update
                         p.x += p.vx; p.y += p.vy;
-                        if(p.x<0 || p.x>this.canvas.width) p.vx*=-1;
-                        if(p.y<0 || p.y>this.canvas.height) p.vy*=-1;
                         
+                        // Boundary collisions
+                        if(p.x < 0 || p.x > this.canvas.width) p.vx *= -1;
+                        if(p.y < 0 || p.y > this.canvas.height) p.vy *= -1;
+                        
+                        // Render node
                         this.ctx.beginPath();
-                        this.ctx.arc(p.x, p.y, 1, 0, Math.PI*2);
-                        this.ctx.fillStyle = "rgba(255,255,255,0.2)";
+                        this.ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+                        this.ctx.fillStyle = "rgba(255, 255, 255, 0.3)";
                         this.ctx.fill();
 
-                        for(let j=i+1; j<this.points.length; j++) {
+                        // Render vector connections
+                        for(let j=i+1; j < this.points.length; j++) {
                             const p2 = this.points[j];
-                            const dist = Math.hypot(p.x-p2.x, p.y-p2.y);
-                            if(dist < 150) {
+                            const dist = Math.hypot(p.x - p2.x, p.y - p2.y);
+                            
+                            if(dist < 165) {
                                 this.ctx.beginPath();
                                 this.ctx.moveTo(p.x, p.y);
                                 this.ctx.lineTo(p2.x, p2.y);
-                                this.ctx.strokeStyle = `rgba(255,255,255,${0.1 * (1 - dist/150)})`;
+                                this.ctx.strokeStyle = `rgba(255, 255, 255, ${0.12 * (1 - dist/165)})`;
+                                this.ctx.lineWidth = 0.5;
                                 this.ctx.stroke();
                             }
                         }
                     });
+                    
                     requestAnimationFrame(() => this.loop());
                 }
             },
 
-            /**
-             * 4. VOICE REPRODUCTION MODULE
-             */
-            Voice: {
-                recorder: null,
-                chunks: [],
-                activeData: null,
-
+            // 5. SONIC BUFFER MODULE (VOICE)
+            Sonic: {
+                mediaRecorder: null, audioChunks: [], currentData: null,
+                
                 async init() {
                     try {
                         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                        this.recorder = new MediaRecorder(stream);
-                        this.recorder.ondataavailable = (e) => this.chunks.push(e.data);
-                        this.recorder.onstop = () => this.save();
-                        Kernel.log("Sonic Sensors Ready.");
-                    } catch (e) {
-                        Kernel.log("Mic Permission Denied.");
+                        this.mediaRecorder = new MediaRecorder(stream);
+                        this.mediaRecorder.ondataavailable = (e) => this.audioChunks.push(e.data);
+                        this.mediaRecorder.onstop = () => this.encode();
+                        Kernel.log("AUDIO_HARDWARE_CONNECTED");
+                    } catch (err) {
+                        Kernel.log("AUDIO_PERMISSION_DENIED");
                     }
                 },
 
                 toggle(user) {
-                    if (this.recorder.state === "inactive") {
-                        this.chunks = [];
-                        this.recorder.start();
-                        document.getElementById(`rec-btn-${user}`).innerText = "🛑 Recording...";
-                        document.getElementById(`rec-btn-${user}`).classList.add('active-rec');
-                        Kernel.log("Streaming voice to buffer...");
+                    if (this.mediaRecorder.state === "inactive") {
+                        this.audioChunks = []; 
+                        this.mediaRecorder.start();
+                        const btn = document.getElementById(`rec-btn-${user}`);
+                        btn.innerText = "🛑 FREQUENCY OPEN...";
+                        btn.classList.add('rec-mode');
+                        Kernel.log("RECORDING_STREAM_START");
                     } else {
-                        this.recorder.stop();
-                        document.getElementById(`rec-btn-${user}`).innerText = "🎙️ Record New Note";
-                        document.getElementById(`rec-btn-${user}`).classList.remove('active-rec');
+                        this.mediaRecorder.stop();
+                        const btn = document.getElementById(`rec-btn-${user}`);
+                        btn.innerText = "🎙️ Open Mic Frequency";
+                        btn.classList.remove('rec-mode');
+                        Kernel.log("RECORDING_STREAM_STOP");
                     }
                 },
 
-                save() {
-                    const blob = new Blob(this.chunks, { type: 'audio/ogg; codecs=opus' });
-                    const reader = new FileReader();
-                    reader.readAsDataURL(blob);
-                    reader.onloadend = () => {
-                        this.activeData = reader.result;
-                        const preview = Kernel.status.currentVault === 'vault-2025' ? 'audio-preview-2025' : 'audio-preview-2026';
-                        const box = Kernel.status.currentVault === 'vault-2025' ? 'preview-2025' : 'preview-2026';
-                        document.getElementById(preview).src = this.activeData;
-                        document.getElementById(box).classList.remove('hidden');
-                        Kernel.log("Sonic Data Encrypted.");
+                encode() {
+                    const audioBlob = new Blob(this.audioChunks, { type: 'audio/ogg; codecs=opus' });
+                    const fileReader = new FileReader();
+                    fileReader.readAsDataURL(audioBlob);
+                    fileReader.onloadend = () => {
+                        this.currentData = fileReader.result;
+                        const role = Kernel.state.activeRole === 'v-2025' ? '2025' : '2026';
+                        const preview = document.getElementById(`prev-${role}`);
+                        preview.src = this.currentData; 
+                        preview.style.display = 'block';
+                        Kernel.log("SONIC_DATA_BUFFERED");
                     };
                 }
             },
 
-            /**
-             * 5. DATA MANAGEMENT MODULE
-             */
-            Data: {
-                commit(role) {
-                    const prefix = role === '2025' ? 'blossom' : 'preston';
-                    const text = document.getElementById(`text-${role}`).value;
+            // 6. SYNC & QUANTUM LINK MODULE
+            Sync: {
+                package(role) {
+                    const payload = {
+                        message: document.getElementById(`msg-${role}`).value,
+                        voice: Kernel.Sonic.currentData,
+                        sign: role === '2025' ? document.getElementById('sig-canvas-2025').toDataURL() : null,
+                        meta: {
+                            ts: Date.now(),
+                            ver: Kernel.meta.version
+                        }
+                    };
                     
-                    if(!text && !Kernel.Voice.activeData) return alert("System requires frequency input.");
-
-                    localStorage.setItem(`${prefix}_msg`, text);
-                    if(Kernel.Voice.activeData) localStorage.setItem(`${prefix}_aud`, Kernel.Voice.activeData);
+                    // Encode to Base64 Packet
+                    const packetString = btoa(unescape(encodeURIComponent(JSON.stringify(payload))));
+                    const displayBox = document.getElementById(`packet-box-${role}`);
                     
-                    if(role === '2025') {
-                        const sig = document.getElementById('sig-pad-2025').toDataURL();
-                        localStorage.setItem('blossom_sig', sig);
-                    }
-
-                    Kernel.log("Frequency Synced.");
-                    confetti({ particleCount: 150 });
-                    alert("Handshake Complete.");
+                    displayBox.innerText = packetString;
+                    displayBox.style.display = 'block';
+                    
+                    // Auto-Copy to Clipboard
+                    navigator.clipboard.writeText(packetString);
+                    Kernel.log("QUANTUM_PACKET_EXPORTED");
+                    
+                    alert("Quantum Packet generated and copied to clipboard! Send this code to synchronize the terminals.");
                 },
 
-                loadBridge() {
-                    const msg = localStorage.getItem('blossom_msg');
-                    const sig = localStorage.getItem('blossom_sig');
-                    const aud = localStorage.getItem('blossom_aud');
-
-                    if(msg) document.getElementById('view-text-blossom').innerText = `"${msg}"`;
-                    if(sig) {
-                        const img = document.getElementById('view-sig-blossom');
-                        img.src = sig; img.style.display = 'block';
+                unpack() {
+                    try {
+                        const rawData = document.getElementById('import-buffer').value;
+                        const decoded = JSON.parse(decodeURIComponent(escape(atob(rawData))));
+                        
+                        document.getElementById('res-msg-text').innerText = decoded.message;
+                        
+                        if(decoded.sign) { 
+                            const sigImg = document.getElementById('res-sig-img');
+                            sigImg.src = decoded.sign; 
+                            sigImg.style.display = 'block'; 
+                        }
+                        
+                        if(decoded.voice) { 
+                            document.getElementById('res-audio-player').src = decoded.voice; 
+                        }
+                        
+                        document.getElementById('decrypted-result').classList.remove('hidden');
+                        confetti({ particleCount: 250, spread: 80, origin: { y: 0.6 } });
+                        Kernel.log("SYNC_SUCCESSFUL");
+                    } catch (e) {
+                        Kernel.log("SYNC_ERROR: INVALID_PACKET");
+                        alert("Invalid Packet Data. Handshake Failed.");
                     }
-                    if(aud) {
-                        document.getElementById('view-audio-blossom').classList.remove('hidden');
-                        document.getElementById('audio-play-blossom').src = aud;
-                    }
-                    document.getElementById('text-2026').value = localStorage.getItem('preston_msg') || "";
                 }
             },
 
-            /**
-             * 6. INTERFACE BINDINGS
-             */
-            bindInputs() {
-                document.getElementById('pin-input').addEventListener('input', (e) => {
-                    const val = e.target.value;
-                    if (val === this.settings.keys.a || val === this.settings.keys.b) {
-                        this.authorize(val);
-                    }
+            // 7. SIGNATURE INPUT MODULE
+            SigEngine: {
+                init(id) {
+                    const canvas = document.getElementById(id); 
+                    const ctx = canvas.getContext('2d');
+                    canvas.width = canvas.offsetWidth; 
+                    canvas.height = canvas.offsetHeight;
+                    
+                    let isDrawing = false;
+                    const getPointerPos = (e) => {
+                        const rect = canvas.getBoundingClientRect();
+                        return { 
+                            x: (e.clientX || (e.touches ? e.touches[0].clientX : 0)) - rect.left, 
+                            y: (e.clientY || (e.touches ? e.touches[0].clientY : 0)) - rect.top 
+                        };
+                    };
+
+                    const drawStart = (e) => { 
+                        isDrawing = true; ctx.beginPath(); 
+                        const p = getPointerPos(e); ctx.moveTo(p.x, p.y); 
+                    };
+                    
+                    const drawMove = (e) => { 
+                        if(!isDrawing) return; 
+                        const p = getPointerPos(e); 
+                        ctx.lineTo(p.x, p.y); 
+                        ctx.strokeStyle = "#1a1a1a"; 
+                        ctx.lineWidth = 4; 
+                        ctx.lineCap = "round"; 
+                        ctx.stroke(); 
+                    };
+                    
+                    const drawEnd = () => isDrawing = false;
+
+                    canvas.addEventListener('mousedown', drawStart);
+                    canvas.addEventListener('touchstart', drawStart);
+                    window.addEventListener('mousemove', drawMove);
+                    window.addEventListener('touchmove', drawMove);
+                    window.addEventListener('mouseup', drawEnd);
+                    window.addEventListener('touchend', drawEnd);
+                    Kernel.log("SIG_PAD_READY");
+                }
+            },
+
+            // 8. SESSION BINDINGS & AUTH
+            bindEvents() {
+                window.addEventListener('mousemove', (e) => {
+                    document.body.style.setProperty('--mx', `${e.clientX}px`);
+                    document.body.style.setProperty('--my', `${e.clientY}px`);
+                });
+
+                document.getElementById('pin-field').addEventListener('input', (e) => {
+                    const entry = e.target.value;
+                    if (entry === this.meta.keys.a) this.grantAccess('v-2025');
+                    if (entry === this.meta.keys.b) this.grantAccess('v-2026');
                 });
             },
 
-            authorize(key) {
-                this.status.auth = true;
-                this.log(`Handshake: Success [${key}]`);
+            grantAccess(vaultId) {
+                this.state.authenticated = true; 
+                this.state.activeRole = vaultId;
+                this.log(`AUTH_SUCCESS: ${vaultId}`);
                 
-                const laser = document.getElementById('scanning-laser');
-                const panel = document.getElementById('gate-panel');
+                const scan = document.getElementById('scanline');
+                const shield = document.getElementById('shield-container');
                 
-                laser.style.display = 'block';
-                laser.style.animation = 'laser-sweep 1.6s forwards';
-                panel.classList.add('vibrate');
+                scan.style.display = 'block';
+                scan.style.animation = 'scanSweep 1.8s forwards';
+                shield.classList.add('shake-effect');
 
                 setTimeout(() => {
-                    document.getElementById('auth-gate').style.opacity = '0';
-                    document.getElementById('auth-gate').style.transform = 'translateY(-100%)';
-                    
+                    document.getElementById('security-gate').style.opacity = '0';
                     setTimeout(() => {
-                        const targetId = key === '2025' ? 'vault-2025' : 'vault-2026';
-                        this.status.currentVault = targetId;
-                        document.getElementById(targetId).classList.add('visible');
-                        if(targetId === 'vault-2026') this.Data.loadBridge();
+                        document.getElementById('security-gate').style.display = 'none';
+                        document.getElementById(vaultId).classList.add('active');
+                        this.Sonic.init();
+                        if(vaultId === 'v-2025') this.SigEngine.init('sig-canvas-2025');
                         confetti({ particleCount: 200, spread: 70 });
-                    }, 800);
-                }, 1600);
+                    }, 1000);
+                }, 1800);
             },
 
-            /**
-             * 7. NARRATIVE SCRIPT
-             */
-            runBlossomSequence() {
-                const script = [
+            // 9. BLOSSOM NARRATIVE PROTOCOL
+            triggerStory() {
+                const lines = [
                     "Hello Blossom.",
-                    "The Preston Terminal is optimized for your device.",
-                    "A private frequency for us to connect.",
-                    "I built this code to last forever.",
+                    "The Preston Terminal is now fully online.",
+                    "I built this because I wanted a bridge just for us.",
+                    "A private frequency where distance doesn't exist.",
+                    "Every line of code here is meant to last as long as we do.",
+                    "I wanted you to have a place to record your voice,",
+                    "to write your thoughts, and to sign your name.",
+                    "You aren’t just a friend, Blossom.",
                     "You are my absolute world.",
-                    "Thank you for being you. 🌸"
+                    "Thank you for being you. The session is now yours. 🌸"
                 ];
                 
-                document.getElementById('start-btn').style.display = 'none';
-                document.getElementById('bg-audio').play();
+                document.getElementById('boot-btn').style.display = 'none';
+                document.getElementById('ambient-audio').play();
+                let index = 0;
                 
-                let idx = 0;
-                const nextStep = () => {
-                    const box = document.getElementById('narration-box');
-                    if (idx < script.length) {
-                        box.style.opacity = 0;
+                const step = () => {
+                    const consoleDisplay = document.getElementById('narrative-engine');
+                    if (index < lines.length) {
+                        consoleDisplay.style.opacity = 0;
                         setTimeout(() => {
-                            box.innerText = script[idx];
-                            box.style.opacity = 1;
-                            idx++;
-                            setTimeout(nextStep, 3500);
+                            consoleDisplay.innerText = lines[index];
+                            consoleDisplay.style.opacity = 1;
+                            index++; 
+                            setTimeout(step, 3600);
                         }, 800);
                     } else {
-                        box.innerHTML = "<span class='script-text'>Link Active.</span>";
-                        document.getElementById('blossom-ui').classList.remove('hidden');
-                        
-                        const pMsg = localStorage.getItem('preston_msg');
-                        const pAud = localStorage.getItem('preston_aud');
-                        if (pMsg) {
-                            document.getElementById('inbox-node').classList.remove('hidden');
-                            document.getElementById('inbox-text').innerText = `"${pMsg}"`;
-                            if(pAud) {
-                                document.getElementById('inbox-audio-box').classList.remove('hidden');
-                                document.getElementById('inbox-audio').src = pAud;
-                            }
-                        }
-                        this.initSig('sig-pad-2025');
+                        consoleDisplay.innerHTML = "<span class='blossom-handwriting'>Handshake Complete.</span>";
+                        document.getElementById('blossom-interface').classList.remove('hidden');
+                        Kernel.log("NARRATIVE_SEQUENCE_TERMINATED");
                     }
-                };
-                nextStep();
-            },
-
-            initSig(id) {
-                const canvas = document.getElementById(id);
-                const ctx = canvas.getContext('2d');
-                canvas.width = canvas.offsetWidth;
-                canvas.height = canvas.offsetHeight;
-                
-                let drawing = false;
-                const getP = (e) => {
-                    const r = canvas.getBoundingClientRect();
-                    return { 
-                        x: (e.clientX || (e.touches ? e.touches[0].clientX : 0)) - r.left, 
-                        y: (e.clientY || (e.touches ? e.touches[0].clientY : 0)) - r.top 
-                    };
-                };
-
-                const start = (e) => { drawing = true; ctx.beginPath(); const p = getP(e); ctx.moveTo(p.x, p.y); };
-                const move = (e) => { if(!drawing) return; const p = getP(e); ctx.lineTo(p.x, p.y); ctx.strokeStyle = "#000"; ctx.lineWidth = 3; ctx.lineCap = "round"; ctx.stroke(); };
-                const stop = () => drawing = false;
-
-                canvas.addEventListener('mousedown', start);
-                canvas.addEventListener('touchstart', start);
-                window.addEventListener('mousemove', move);
-                window.addEventListener('touchmove', move);
-                window.addEventListener('mouseup', stop);
-                window.addEventListener('touchend', stop);
+                }; 
+                step();
             }
         };
 
-        // STARTUP
+        // KERNEL ENTRY POINT
         window.onload = () => Kernel.boot();
-        document.getElementById('start-btn').onclick = () => Kernel.runBlossomSequence();
+        document.getElementById('boot-btn').onclick = () => Kernel.triggerStory();
 
     </script>
 </body>
