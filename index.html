@@ -3,35 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Preston hates Blossom🫳</title>
+    <title>Preston Terminal 🦾 | Ultra-Secure Vault v4.0</title>
     
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
     
     <style>
-        
+        /* PRESTON TERMINAL ARCHITECTURE v4.0.0
+           Build Date: 2026
+           Encryption Standard: AES-256 (Simulated)
+           Core UI: Obsidian Glass & Blossom Accent
+        */
         @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700;800&family=JetBrains+Mono:wght@400&display=swap');
 
         :root {
-            /* Core Color Palette */
-            --accent-glow: oklch(75% 0.18 350);
+            --accent: oklch(75% 0.18 350);
             --accent-mute: oklch(75% 0.18 350 / 0.15);
-            --bg-deep: oklch(5% 0.01 260);
-            --bg-surface: oklch(100% 0 0 / 0.03);
-            --border-primary: oklch(100% 0 0 / 0.12);
-            --text-high: oklch(98% 0.01 260);
-            --text-low: oklch(60% 0.02 260);
-            
-            /* Motion Design */
-            --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
-            --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
-            --transition-main: 0.8s;
-            
-            /* Shadow Systems */
-            --shadow-vault: 0 60px 120px -30px rgba(0,0,0,0.8);
+            --bg: oklch(5% 0.01 260);
+            --surface: oklch(100% 0 0 / 0.04);
+            --border: oklch(100% 0 0 / 0.15);
+            --text: oklch(98% 0.01 260);
+            --text-dim: oklch(60% 0.02 260);
+            --ease-in-out-expo: cubic-bezier(1, 0, 0, 1);
+            --glitch-speed: 0.2s;
         }
 
         /* -------------------------------------------------------------------------
-           1. ROOT STYLES & RESET
+           STYLING LAYER 1: GLOBAL RESET & SCROLL
            ------------------------------------------------------------------------- */
         * {
             margin: 0;
@@ -39,716 +36,695 @@
             box-sizing: border-box;
             -webkit-tap-highlight-color: transparent;
             outline: none !important;
-            scrollbar-width: none;
         }
-
-        *::-webkit-scrollbar { display: none; }
 
         html, body {
             width: 100%;
             height: 100dvh;
-            background-color: var(--bg-deep);
+            background-color: var(--bg);
             font-family: 'Plus Jakarta Sans', sans-serif;
             overflow: hidden;
-            color: var(--text-high);
+            color: var(--text);
             user-select: none;
         }
 
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            perspective: 1500px;
-        }
-
         /* -------------------------------------------------------------------------
-           2. PHYSICS CANVAS (THE NEURAL WEB)
+           STYLING LAYER 2: SYSTEM BACKGROUNDS
            ------------------------------------------------------------------------- */
-        #neural-engine {
+        #particle-canvas {
             position: fixed;
             inset: 0;
             z-index: 1;
             pointer-events: none;
-            opacity: 0.5;
+            opacity: 0.4;
         }
 
-        #dynamic-spotlight {
+        #ui-spotlight {
             position: fixed;
             inset: 0;
             z-index: 2;
             pointer-events: none;
             background: radial-gradient(
-                circle 450px at var(--mx, 50%) var(--my, 50%),
+                circle 500px at var(--mx, 50%) var(--my, 50%),
                 var(--accent-mute),
-                transparent 70%
+                transparent 80%
             );
         }
 
         /* -------------------------------------------------------------------------
-           3. TERMINAL INTERFACE (PRE-BOOT)
+           STYLING LAYER 3: TERMINAL BOOT & LOGS
            ------------------------------------------------------------------------- */
-        .terminal-log-container {
+        .system-logs {
             position: fixed;
             bottom: 30px;
             left: 30px;
             font-family: 'JetBrains Mono', monospace;
-            font-size: 0.7rem;
-            color: var(--accent-glow);
-            z-index: 900;
+            font-size: 0.65rem;
+            color: var(--accent);
+            z-index: 999;
             opacity: 0.8;
-            line-height: 1.8;
             pointer-events: none;
-            text-shadow: 0 0 8px var(--accent-glow);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            line-height: 1.5;
         }
 
-        #laser-scanner-line {
+        #scanner-bar {
             position: fixed;
             top: -10px;
             left: 0;
             width: 100%;
             height: 4px;
-            background: var(--accent-glow);
-            box-shadow: 0 0 40px var(--accent-glow), 0 0 80px var(--accent-glow);
-            z-index: 1000;
+            background: var(--accent);
+            box-shadow: 0 0 30px var(--accent);
+            z-index: 1001;
             display: none;
-            pointer-events: none;
         }
 
         /* -------------------------------------------------------------------------
-           4. AUTHENTICATION (LOCK SCREEN)
+           STYLING LAYER 4: AUTHENTICATION INTERFACE
            ------------------------------------------------------------------------- */
-        .lock-overlay {
+        .auth-portal {
             position: fixed;
             inset: 0;
-            background: var(--bg-deep);
-            z-index: 850;
+            z-index: 900;
             display: flex;
             justify-content: center;
             align-items: center;
-            transition: transform 1.8s var(--ease-out-expo), opacity 1.2s ease;
+            background: var(--bg);
+            transition: transform 2s var(--ease-in-out-expo), opacity 1.5s ease;
         }
 
-        .terminal-auth-card {
-            background: var(--bg-surface);
-            backdrop-filter: blur(120px) saturate(210%);
-            -webkit-backdrop-filter: blur(120px) saturate(210%);
-            border: 1px solid var(--border-primary);
-            border-radius: 64px;
-            padding: 5rem 3.5rem;
+        .auth-card {
+            background: var(--surface);
+            backdrop-filter: blur(80px);
+            border: 1px solid var(--border);
+            border-radius: 60px;
+            padding: 5rem 4rem;
+            width: min(92%, 520px);
             text-align: center;
-            width: min(94%, 500px);
+            box-shadow: 0 50px 100px -20px rgba(0,0,0,0.9);
             position: relative;
-            box-shadow: var(--shadow-vault);
-            transform: translateZ(0);
         }
 
-        .terminal-auth-card::after {
+        .auth-card::before {
             content: '';
             position: absolute;
-            inset: 0;
-            padding: 2px;
-            border-radius: 64px;
-            background: linear-gradient(145deg, var(--border-primary), var(--accent-glow), var(--border-primary));
-            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            mask-composite: exclude;
-            pointer-events: none;
+            inset: -2px;
+            border-radius: 62px;
+            background: linear-gradient(45deg, transparent, var(--accent), transparent);
+            z-index: -1;
             opacity: 0.3;
         }
 
-        .auth-status-label {
-            display: block;
-            font-size: 0.8rem;
-            letter-spacing: 8px;
-            color: var(--accent-glow);
-            text-transform: uppercase;
-            font-weight: 800;
-            margin-bottom: 3rem;
-        }
-
-        .key-input-field {
+        .pin-input {
             all: unset;
             width: 100%;
             font-size: 5rem;
-            letter-spacing: 28px;
-            color: var(--text-high);
-            text-align: center;
+            letter-spacing: 30px;
             font-weight: 800;
-            border-bottom: 2px solid var(--border-primary);
-            padding-bottom: 15px;
-            transition: 0.5s var(--ease-standard);
+            text-align: center;
+            border-bottom: 2px solid var(--border);
+            margin: 2rem 0;
+            transition: 0.5s;
         }
 
-        .key-input-field:focus {
-            border-color: var(--accent-glow);
+        .pin-input:focus {
+            border-color: var(--accent);
+            color: var(--accent);
         }
 
         /* -------------------------------------------------------------------------
-           5. VAULT MODULES
+           STYLING LAYER 5: MODULE CONTAINERS
            ------------------------------------------------------------------------- */
-        .module-wrapper {
+        .vault-container {
             position: relative;
             z-index: 100;
-            width: min(94%, 600px);
+            width: min(95%, 650px);
             display: none;
             opacity: 0;
-            transform: translateY(60px);
-            transition: 1.5s var(--ease-out-expo);
+            transform: scale(0.9) translateY(40px);
+            max-height: 90dvh;
+            overflow-y: auto;
+            padding: 20px;
         }
 
-        .module-wrapper.active {
+        .vault-container.active {
             display: block;
-            animation: moduleReveal 1.4s var(--ease-out-expo) forwards;
+            animation: vaultIn 1.5s var(--ease-in-out-expo) forwards;
         }
 
-        @keyframes moduleReveal {
-            to { opacity: 1; transform: translateY(0); }
+        @keyframes vaultIn {
+            to { opacity: 1; transform: scale(1) translateY(0); }
         }
 
-        .bento-module {
-            background: var(--bg-surface);
-            backdrop-filter: blur(60px);
-            border-radius: 48px;
-            border: 1px solid var(--border-primary);
+        .glass-module {
+            background: var(--surface);
+            backdrop-filter: blur(40px);
+            border: 1px solid var(--border);
+            border-radius: 40px;
             padding: 3rem;
-            margin-bottom: 1.5rem;
+            margin-bottom: 2rem;
+            position: relative;
         }
 
         /* -------------------------------------------------------------------------
-           6. NARRATIVE PLAYER
+           STYLING LAYER 6: NARRATIVE & SCRIPT
            ------------------------------------------------------------------------- */
-        #narrative-console {
-            font-size: 1.75rem;
-            font-weight: 200;
-            line-height: 1.7;
-            min-height: 260px;
+        #narrative-display {
+            min-height: 200px;
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
-            color: var(--text-high);
+            font-size: 1.8rem;
+            font-weight: 300;
+            line-height: 1.6;
         }
 
-        .blossom-script {
+        .cursive-header {
             font-family: 'Dancing Script', cursive;
-            font-size: 3.5rem;
-            color: var(--accent-glow);
+            font-size: 3.8rem;
+            color: var(--accent);
+            text-shadow: 0 0 20px var(--accent-mute);
         }
 
         /* -------------------------------------------------------------------------
-           7. INTERFACE CONTROLS
+           STYLING LAYER 7: INPUTS & BUTTONS
            ------------------------------------------------------------------------- */
-        .action-button {
+        .btn-premium {
             all: unset;
             display: block;
             width: 100%;
-            padding: 1.4rem 0;
-            background: var(--text-high);
-            color: var(--bg-deep);
-            border-radius: 28px;
+            padding: 1.5rem 0;
+            background: var(--text);
+            color: var(--bg);
+            border-radius: 25px;
             font-weight: 800;
             text-align: center;
             cursor: pointer;
-            transition: 0.5s var(--ease-out-expo);
-            margin-top: 2rem;
+            transition: 0.5s;
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 3px;
+            margin-top: 2rem;
         }
 
-        .action-button:hover {
-            background: var(--accent-glow);
-            transform: translateY(-8px) scale(1.02);
-            box-shadow: 0 25px 50px oklch(75% 0.18 350 / 0.35);
+        .btn-premium:hover {
+            background: var(--accent);
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px var(--accent-mute);
         }
 
-        .action-button.secondary {
+        .btn-premium.ghost {
             background: transparent;
-            color: var(--text-high);
-            border: 1px solid var(--border-primary);
+            color: var(--text);
+            border: 1px solid var(--border);
         }
 
-        .signature-surface {
-            background: #ffffff;
-            border-radius: 28px;
-            width: 100%;
-            height: 220px;
-            margin: 2rem 0;
-            touch-action: none;
-            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"><circle cx="16" cy="16" r="4" fill="black"/></svg>'), auto;
+        .btn-premium.recording {
+            background: #ff3b3b;
+            animation: pulse-recording 1s infinite;
         }
 
-        .input-area-premium {
-            width: 100%;
-            height: 140px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--border-primary);
-            border-radius: 28px;
-            padding: 1.5rem;
-            color: var(--text-high);
-            font-family: inherit;
-            font-size: 1rem;
-            resize: none;
-            margin-top: 1.2rem;
-            transition: 0.3s;
-        }
-
-        .input-area-premium:focus {
-            background: rgba(255, 255, 255, 0.08);
-            border-color: var(--accent-glow);
+        @keyframes pulse-recording {
+            50% { opacity: 0.5; transform: scale(0.98); }
         }
 
         /* -------------------------------------------------------------------------
-           8. GRID COMPONENTS
+           STYLING LAYER 8: BENTO & SIGNATURE
            ------------------------------------------------------------------------- */
-        .bento-grid {
-            display: grid;
-            gap: 1.5rem;
-        }
-
         .bento-node {
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid var(--border-primary);
-            border-radius: 36px;
-            padding: 28px;
+            background: rgba(0,0,0,0.4);
+            border: 1px solid var(--border);
+            border-radius: 30px;
+            padding: 25px;
+            margin-bottom: 1.5rem;
         }
 
-        .node-tag {
-            font-size: 0.65rem;
+        .node-label {
+            display: block;
+            font-size: 0.6rem;
             font-weight: 800;
-            color: var(--accent-glow);
-            letter-spacing: 5px;
+            letter-spacing: 4px;
+            color: var(--accent);
             text-transform: uppercase;
             margin-bottom: 15px;
-            display: block;
+        }
+
+        .sig-pad {
+            background: #fff;
+            width: 100%;
+            height: 250px;
+            border-radius: 25px;
+            touch-action: none;
+            cursor: crosshair;
+        }
+
+        .premium-textarea {
+            width: 100%;
+            height: 150px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border);
+            border-radius: 25px;
+            padding: 1.5rem;
+            color: var(--text);
+            font-family: inherit;
+            font-size: 1.1rem;
+            resize: none;
         }
 
         /* -------------------------------------------------------------------------
-           9. SYSTEM ANIMATIONS
+           STYLING LAYER 9: UI ANIMATIONS
            ------------------------------------------------------------------------- */
-        @keyframes scan-cycle {
+        @keyframes scanner-move {
             0% { top: 0%; opacity: 1; }
-            50% { opacity: 1; }
             100% { top: 100%; opacity: 0; }
         }
 
-        @keyframes terminal-haptic {
-            0% { transform: translate(0, 0); }
-            10% { transform: translate(-3px, 3px); }
-            30% { transform: translate(3px, -3px); }
-            50% { transform: translate(-3px, -3px); }
-            70% { transform: translate(3px, 3px); }
-            100% { transform: translate(0, 0); }
+        .haptic-shake {
+            animation: shake 0.15s infinite;
         }
 
-        .haptic-vibrate { animation: terminal-haptic 0.12s linear infinite; }
+        @keyframes shake {
+            0% { transform: translate(1px, 1px); }
+            50% { transform: translate(-1px, -1px); }
+            100% { transform: translate(1px, -1px); }
+        }
+
         .hidden { display: none !important; }
 
     </style>
 </head>
 <body>
 
-    <canvas id="neural-engine"></canvas>
-    <div id="dynamic-spotlight"></div>
-    <div id="laser-scanner-line"></div>
+    <canvas id="particle-canvas"></canvas>
+    <div id="ui-spotlight"></div>
+    <div id="scanner-bar"></div>
     
-    <div class="terminal-log-container" id="terminal-output">
-        [ PRESTON TERMINAL v2.0.8 ]<br>
-        [ KERNEL: ARMOR_PROTOCOL ]<br>
-        [ STATUS: STANDBY ]
+    <div class="system-logs" id="os-terminal">
+        [ PRESTON TERMINAL v4.0.0 ]<br>
+        [ KERNEL: ARMOR_SECURE_v9 ]<br>
+        [ STATUS: AWAITING_PIN ]
     </div>
 
-    <div class="lock-overlay" id="main-gate">
-        <div class="terminal-auth-card" id="auth-panel">
-            <span class="auth-status-label" id="time-greeting">Identity Check</span>
-            <input type="password" class="key-input-field" id="pin-field" maxlength="4" placeholder="••••" inputmode="numeric" autofocus>
-            <p style="font-size: 0.6rem; color: var(--text-low); margin-top: 3rem; letter-spacing: 4px;">SECURE BRIDGE BY PRESTON 🦾</p>
+    <div class="auth-portal" id="auth-gate">
+        <div class="auth-card" id="gate-panel">
+            <span class="node-label" id="user-greeting">Restricted Access</span>
+            <input type="password" class="pin-input" id="pin-field" maxlength="4" placeholder="••••" inputmode="numeric" autofocus>
+            <p style="font-size: 0.6rem; color: var(--text-dim); margin-top: 3rem; letter-spacing: 5px;">
+                DECRYPTING FOR PRESTON & BLOSSOM 🦾
+            </p>
         </div>
     </div>
 
-    <audio id="terminal-ambient" loop>
+    <audio id="os-ambient" loop>
         <source src="https://cdn.pixabay.com/audio/2022/05/27/audio_1808f3030c.mp3" type="audio/mpeg">
     </audio>
 
-    <div class="module-wrapper" id="vault-blossom">
-        <div class="bento-module">
-            <div id="narrative-console">Decrypting Frequency...<br>Handshake sequence ready.</div>
-            <button class="action-button" id="init-narrative-btn">Initiate Connection</button>
+    <div class="vault-container" id="vault-blossom">
+        <div class="glass-module">
+            <div id="narrative-display">Accessing encrypted archives...<br>Please wait.</div>
+            <button class="btn-premium" id="start-story-btn">Launch Sequence</button>
             
-            <div id="blossom-active-interface" class="hidden">
-                <div id="remote-transmission" class="bento-node hidden" style="margin-bottom: 2rem; border-color: var(--accent-glow);">
-                    <span class="node-tag">Incoming from Preston</span>
-                    <p id="transmission-text" style="font-style: italic; line-height: 1.6;"></p>
+            <div id="blossom-active-ui" class="hidden">
+                <div id="incoming-transmission" class="bento-node hidden" style="border-color: var(--accent);">
+                    <span class="node-label">Preston Transmission</span>
+                    <p id="preston-text-out" style="font-style: italic; line-height: 1.6;"></p>
+                    <div id="preston-audio-out-box" class="hidden" style="margin-top: 15px;">
+                        <audio id="preston-audio-playback" controls style="width: 100%; filter: invert(1);"></audio>
+                    </div>
                 </div>
 
-                <span class="node-tag">Biometric Seal Signature</span>
-                <canvas id="sig-surface" class="signature-surface"></canvas>
+                <span class="node-label">Digital Authenticator</span>
+                <canvas id="sig-pad-blossom" class="sig-pad"></canvas>
                 
-                <span class="node-tag">Return Transmission</span>
-                <textarea class="input-area-premium" id="her-response-data" placeholder="Write your synchronization message..."></textarea>
+                <span class="node-label">Voice Frequency Link</span>
+                <button class="btn-premium ghost" id="rec-btn-blossom" onclick="TerminalOS.Voice.toggle('blossom')">🎙️ Hold to Speak</button>
+                <div id="blossom-voice-preview" class="hidden" style="margin-top: 10px;">
+                    <audio id="blossom-voice-audio" controls style="width: 100%; filter: invert(1);"></audio>
+                </div>
+
+                <span class="node-label">Text Frequency Update</span>
+                <textarea class="premium-textarea" id="blossom-text-in" placeholder="Message to Preston Terminal..."></textarea>
                 
-                <button class="action-button" style="background: var(--accent-glow);" onclick="Controller.synchronize('blossom_msg', 'her-response-data')">Commit to Vault ❤️</button>
+                <button class="btn-premium" style="background: var(--accent);" onclick="TerminalOS.Storage.save('blossom')">Encrypt & Send ❤️</button>
             </div>
         </div>
     </div>
 
-    <div class="module-wrapper" id="vault-preston">
-        <div class="bento-module">
-            <h1 class="blossom-script" style="margin-bottom: 2rem;">Preston Bridge</h1>
-            
-            <div class="bento-grid">
-                <div class="bento-node">
-                    <span class="node-tag">Blossom's Last Data</span>
-                    <p id="bridge-data-output" style="font-style: italic; margin-bottom: 15px; opacity: 0.9;">No data found on this frequency.</p>
-                    <img id="sig-playback-node" style="width: 100%; border-radius: 20px; background: white; padding: 12px; display: none; margin-top: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
-                </div>
-
-                <div class="bento-node">
-                    <span class="node-tag">New Transmission</span>
-                    <textarea class="input-area-premium" id="preston-push-data" placeholder="Message for the next session?"></textarea>
-                    <button class="action-button" style="background: var(--accent-glow);" onclick="Controller.synchronize('him_msg', 'preston-push-data')">Broadcast to Terminal</button>
+    <div class="vault-container" id="vault-preston">
+        <div class="glass-module">
+            <h1 class="cursive-header">Bridge Control</h1>
+            <div class="bento-node">
+                <span class="node-label">Last Blossom Data</span>
+                <p id="bridge-text-view" style="font-style: italic; opacity: 0.8;">No signal found.</p>
+                <img id="bridge-sig-view" style="width: 100%; border-radius: 20px; background: white; padding: 15px; display: none; margin-top: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+                <div id="bridge-audio-view" class="hidden" style="margin-top: 20px;">
+                    <span class="node-label" style="color: #fff;">Sonic Signature</span>
+                    <audio id="blossom-audio-playback" controls style="width: 100%; filter: invert(1);"></audio>
                 </div>
             </div>
 
-            <button class="action-button secondary" onclick="location.reload()">Terminate Link</button>
+            <div class="bento-node">
+                <span class="node-label">Your Next Transmission</span>
+                <button class="btn-premium ghost" id="rec-btn-preston" onclick="TerminalOS.Voice.toggle('preston')">🎙️ Record Voice Note</button>
+                <div id="preston-voice-preview" class="hidden" style="margin-top: 10px;">
+                    <audio id="preston-voice-audio" controls style="width: 100%; filter: invert(1);"></audio>
+                </div>
+                <textarea class="premium-textarea" id="preston-text-in" style="margin-top: 15px;" placeholder="What should she see next?"></textarea>
+                <button class="btn-premium" style="background: var(--accent);" onclick="TerminalOS.Storage.save('preston')">Broadcast Update</button>
+            </div>
+
+            <button class="btn-premium ghost" onclick="location.reload()">Kill Session</button>
         </div>
     </div>
 
     <script>
         /**
-         * CONTROLLER MODULE
-         * Manages Hardware, Auth, and Data Persistance
+         * TERMINAL OS CORE
+         * Robust, Module-Based System Architecture
          */
-        const Controller = {
-            metadata: {
-                version: "2.0.8",
-                kernel: "PRESTON_TERMINAL",
+        const TerminalOS = {
+            
+            // 1. DATA CONSTANTS & STATE
+            config: {
+                version: "4.0.0",
+                key_a: "2025",
+                key_b: "2026",
                 logs: []
             },
 
             state: {
-                activeVault: null,
-                isAuthorized: false,
-                narrativeIndex: 0
+                active: null,
+                isAuth: false,
+                mouse: { x: 0, y: 0 }
             },
 
-            /**
-             * INITIALIZATION ENGINE
-             */
-            init() {
-                this.bindGlobalEvents();
-                this.startNeuralEngine();
-                this.updateGreeting();
-                this.pushLog("System Boot Sequence Complete.");
-                this.pushLog("Preston Terminal: Online.");
+            // 2. SYSTEM LOG ENGINE
+            log(message) {
+                const el = document.getElementById('os-terminal');
+                this.config.logs.push(`> [${new Date().toLocaleTimeString()}] ${message}`);
+                if (this.config.logs.length > 7) this.config.logs.shift();
+                el.innerHTML = this.config.logs.join('<br>');
             },
 
-            /**
-             * LOGGING SYSTEM
-             */
-            pushLog(message) {
-                const output = document.getElementById('terminal-output');
-                this.metadata.logs.push(`> ${message}`);
-                if (this.metadata.logs.length > 6) this.metadata.logs.shift();
-                output.innerHTML = this.metadata.logs.join('<br>');
-            },
+            // 3. VOICE ENGINE MODULE
+            Voice: {
+                recorder: null,
+                stream: null,
+                chunks: [],
+                activeBlob: null,
 
-            /**
-             * EVENT ARCHITECTURE
-             */
-            bindGlobalEvents() {
-                const input = document.getElementById('pin-field');
-                
-                // Auth Trigger
-                input.addEventListener('input', (e) => {
-                    const value = e.target.value;
-                    if (value === '2025' || value === '2026') {
-                        this.executeAuthSequence(value);
+                async setup() {
+                    try {
+                        this.stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                        this.recorder = new MediaRecorder(this.stream);
+                        this.recorder.ondataavailable = (e) => this.chunks.push(e.data);
+                        this.recorder.onstop = () => this.process();
+                        TerminalOS.log("Mic hardware synced.");
+                    } catch (e) {
+                        TerminalOS.log("Hardware Err: Mic blocked.");
                     }
-                });
+                },
 
-                // Visual Interaction
-                window.addEventListener('mousemove', (e) => {
+                toggle(user) {
+                    if (this.recorder.state === "inactive") {
+                        this.chunks = [];
+                        this.recorder.start();
+                        document.getElementById(`rec-btn-${user}`).innerText = "🛑 STOPPING IN 3..2..1";
+                        document.getElementById(`rec-btn-${user}`).classList.add('recording');
+                        TerminalOS.log("Recording bitstream...");
+                    } else {
+                        this.recorder.stop();
+                        document.getElementById(`rec-btn-${user}`).innerText = "🎙️ Record New Note";
+                        document.getElementById(`rec-btn-${user}`).classList.remove('recording');
+                    }
+                },
+
+                process() {
+                    const blob = new Blob(this.chunks, { type: 'audio/ogg; codecs=opus' });
+                    const reader = new FileReader();
+                    reader.readAsDataURL(blob);
+                    reader.onloadend = () => {
+                        this.activeBlob = reader.result;
+                        const preview = TerminalOS.state.active === 'vault-blossom' ? 'blossom-voice-audio' : 'preston-voice-audio';
+                        const box = TerminalOS.state.active === 'vault-blossom' ? 'blossom-voice-preview' : 'preston-voice-preview';
+                        document.getElementById(preview).src = this.activeBlob;
+                        document.getElementById(box).classList.remove('hidden');
+                        TerminalOS.log("Audio compressed to Base64.");
+                    };
+                }
+            },
+
+            // 4. PHYSICS ENGINE (NEURAL NETWORK)
+            Physics: {
+                canvas: null,
+                ctx: null,
+                nodes: [],
+
+                init() {
+                    this.canvas = document.getElementById('particle-canvas');
+                    this.ctx = this.canvas.getContext('2d');
+                    this.resize();
+                    window.onresize = () => this.resize();
+                    
+                    for(let i=0; i<80; i++) this.nodes.push(this.createNode());
+                    this.animate();
+                },
+
+                resize() {
+                    this.canvas.width = window.innerWidth;
+                    this.canvas.height = window.innerHeight;
+                },
+
+                createNode() {
+                    return {
+                        x: Math.random() * this.canvas.width,
+                        y: Math.random() * this.canvas.height,
+                        vx: (Math.random() - 0.5) * 0.6,
+                        vy: (Math.random() - 0.5) * 0.6,
+                        r: Math.random() * 2 + 0.5
+                    };
+                },
+
+                animate() {
+                    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                    this.nodes.forEach((n, i) => {
+                        n.x += n.vx; n.y += n.vy;
+                        if(n.x<0 || n.x>this.canvas.width) n.vx *= -1;
+                        if(n.y<0 || n.y>this.canvas.height) n.vy *= -1;
+                        
+                        this.ctx.beginPath();
+                        this.ctx.arc(n.x, n.y, n.r, 0, Math.PI*2);
+                        this.ctx.fillStyle = "rgba(255, 255, 255, 0.3)";
+                        this.ctx.fill();
+
+                        for(let j=i+1; j<this.nodes.length; j++) {
+                            const m = this.nodes[j];
+                            const d = Math.hypot(n.x - m.x, n.y - m.y);
+                            if(d < 180) {
+                                this.ctx.beginPath();
+                                this.ctx.moveTo(n.x, n.y);
+                                this.ctx.lineTo(m.x, m.y);
+                                this.ctx.strokeStyle = `rgba(255, 255, 255, ${0.12 * (1 - d/180)})`;
+                                this.ctx.stroke();
+                            }
+                        }
+                    });
+                    requestAnimationFrame(() => this.animate());
+                }
+            },
+
+            // 5. SIGNATURE MODULE
+            Signature: {
+                ctx: null,
+                drawing: false,
+
+                setup(id) {
+                    const canvas = document.getElementById(id);
+                    this.ctx = canvas.getContext('2d');
+                    canvas.width = canvas.offsetWidth;
+                    canvas.height = canvas.offsetHeight;
+                    
+                    const getPos = (e) => {
+                        const r = canvas.getBoundingClientRect();
+                        return { x: (e.clientX || e.touches[0].clientX) - r.left, y: (e.clientY || e.touches[0].clientY) - r.top };
+                    };
+
+                    canvas.onmousedown = canvas.ontouchstart = (e) => {
+                        this.drawing = true;
+                        const p = getPos(e);
+                        this.ctx.beginPath();
+                        this.ctx.moveTo(p.x, p.y);
+                    };
+
+                    window.onmousemove = window.ontouchmove = (e) => {
+                        if(!this.drawing) return;
+                        const p = getPos(e);
+                        this.ctx.lineTo(p.x, p.y);
+                        this.ctx.strokeStyle = "#000";
+                        this.ctx.lineWidth = 4;
+                        this.ctx.lineCap = "round";
+                        this.ctx.stroke();
+                    };
+
+                    window.onmouseup = window.ontouchend = () => this.drawing = false;
+                }
+            },
+
+            // 6. PERSISTENCE LAYER (STORAGE)
+            Storage: {
+                save(role) {
+                    const textKey = role === 'blossom' ? 'blossom_txt' : 'preston_txt';
+                    const audioKey = role === 'blossom' ? 'blossom_aud' : 'preston_aud';
+                    const inputId = role === 'blossom' ? 'blossom-text-in' : 'preston-text-in';
+                    
+                    const textVal = document.getElementById(inputId).value;
+                    if(!textVal && !TerminalOS.Voice.activeBlob) return alert("System requires data input.");
+
+                    localStorage.setItem(textKey, textVal);
+                    if(TerminalOS.Voice.activeBlob) localStorage.setItem(audioKey, TerminalOS.Voice.activeBlob);
+                    
+                    if(role === 'blossom') {
+                        const sig = document.getElementById('sig-pad-blossom').toDataURL();
+                        localStorage.setItem('blossom_sig_final', sig);
+                    }
+
+                    TerminalOS.log("Transmission Successful.");
+                    confetti({ particleCount: 150 });
+                    alert("Bridge Updated.");
+                },
+
+                loadForPreston() {
+                    const txt = localStorage.getItem('blossom_txt');
+                    const sig = localStorage.getItem('blossom_sig_final');
+                    const aud = localStorage.getItem('blossom_aud');
+
+                    if(txt) document.getElementById('bridge-text-view').innerText = `"${txt}"`;
+                    if(sig) {
+                        const img = document.getElementById('bridge-sig-view');
+                        img.src = sig; img.style.display = 'block';
+                    }
+                    if(aud) {
+                        document.getElementById('bridge-audio-view').classList.remove('hidden');
+                        document.getElementById('blossom-audio-playback').src = aud;
+                    }
+                    
+                    document.getElementById('preston-text-in').value = localStorage.getItem('preston_txt') || "";
+                }
+            },
+
+            // 7. AUTH & CORE SEQUENCES
+            boot() {
+                this.Physics.init();
+                this.Voice.setup();
+                this.log("Kernel: Online.");
+                this.updateGreeting();
+                
+                window.onmousemove = (e) => {
                     document.body.style.setProperty('--mx', `${e.clientX}px`);
                     document.body.style.setProperty('--my', `${e.clientY}px`);
-                });
+                };
 
-                // Auto-Focus
-                window.addEventListener('click', () => {
-                    if (!this.state.isAuthorized) input.focus();
+                document.getElementById('pin-field').addEventListener('input', (e) => {
+                    const val = e.target.value;
+                    if (val === this.config.key_a || val === this.config.key_b) {
+                        this.authorize(val);
+                    }
                 });
             },
 
             updateGreeting() {
                 const hour = new Date().getHours();
-                const target = document.getElementById('time-greeting');
-                if (hour < 12) target.innerText = "Good Morning, Blossom";
-                else if (hour < 18) target.innerText = "Good Afternoon, Blossom";
-                else target.innerText = "Good Evening, Blossom";
+                const label = document.getElementById('user-greeting');
+                label.innerText = hour < 12 ? "Good Morning, Blossom" : hour < 18 ? "Good Afternoon, Blossom" : "Good Evening, Blossom";
             },
 
-            /**
-             * NEURAL PHYSICS ENGINE
-             */
-            startNeuralEngine() {
-                const canvas = document.getElementById('neural-engine');
-                const ctx = canvas.getContext('2d');
-                let nodes = [];
-
-                const resize = () => {
-                    canvas.width = window.innerWidth;
-                    canvas.height = window.innerHeight;
-                };
-                window.onresize = resize;
-                resize();
-
-                class Node {
-                    constructor() {
-                        this.init();
-                    }
-                    init() {
-                        this.x = Math.random() * canvas.width;
-                        this.y = Math.random() * canvas.height;
-                        this.vx = (Math.random() - 0.5) * 0.5;
-                        this.vy = (Math.random() - 0.5) * 0.5;
-                        this.r = Math.random() * 2 + 0.5;
-                    }
-                    update() {
-                        this.x += this.vx;
-                        this.y += this.vy;
-                        if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
-                        if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
-                    }
-                    draw() {
-                        ctx.beginPath();
-                        ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
-                        ctx.fillStyle = "rgba(255, 255, 255, 0.25)";
-                        ctx.fill();
-                    }
-                }
-
-                for (let i = 0; i < 70; i++) nodes.push(new Node());
-
-                const frame = () => {
-                    ctx.clearRect(0, 0, canvas.width, canvas.height);
-                    
-                    for (let i = 0; i < nodes.length; i++) {
-                        for (let j = i + 1; j < nodes.length; j++) {
-                            const dx = nodes[i].x - nodes[j].x;
-                            const dy = nodes[i].y - nodes[j].y;
-                            const dist = Math.sqrt(dx * dx + dy * dy);
-                            if (dist < 160) {
-                                ctx.beginPath();
-                                ctx.moveTo(nodes[i].x, nodes[i].y);
-                                ctx.lineTo(nodes[j].x, nodes[j].y);
-                                ctx.strokeStyle = `rgba(255, 255, 255, ${0.15 * (1 - dist / 160)})`;
-                                ctx.lineWidth = 0.5;
-                                ctx.stroke();
-                            }
-                        }
-                        nodes[i].update();
-                        nodes[i].draw();
-                    }
-                    requestAnimationFrame(frame);
-                };
-                frame();
-            },
-
-            /**
-             * AUTHORIZATION SEQUENCE
-             */
-            executeAuthSequence(key) {
-                this.state.isAuthorized = true;
-                this.pushLog(`Key Detected: [${key}]`);
-                this.pushLog("Starting Biometric Sweep...");
-
-                const scanner = document.getElementById('laser-scanner-line');
-                const authCard = document.getElementById('auth-panel');
+            authorize(key) {
+                this.state.isAuth = true;
+                this.log(`Authorization: Success [Key ${key}]`);
                 
-                // Hardware visual feedback
+                const scanner = document.getElementById('scanner-bar');
+                const panel = document.getElementById('gate-panel');
+                
                 scanner.style.display = 'block';
-                scanner.style.animation = 'scan-cycle 1.6s forwards';
-                authCard.classList.add('haptic-vibrate');
+                scanner.style.animation = 'scanner-move 1.6s forwards';
+                panel.classList.add('haptic-shake');
 
                 setTimeout(() => {
-                    this.pushLog("Access Granted. Handshake Verified.");
-                    authCard.classList.remove('haptic-vibrate');
-                    
-                    document.getElementById('main-gate').style.opacity = '0';
-                    document.getElementById('main-gate').style.transform = 'translateY(-100%) scale(0.9)';
+                    document.getElementById('auth-gate').style.opacity = '0';
+                    document.getElementById('auth-gate').style.transform = 'translateY(-100%)';
                     
                     setTimeout(() => {
-                        this.transitionToVault(key === '2025' ? 'vault-blossom' : 'vault-preston');
-                    }, 1000);
+                        this.openVault(key === '2025' ? 'vault-blossom' : 'vault-preston');
+                    }, 800);
                 }, 1600);
             },
 
-            transitionToVault(vaultId) {
-                const vault = document.getElementById(vaultId);
-                vault.classList.add('active');
-                this.state.activeVault = vaultId;
+            openVault(id) {
+                this.state.active = id;
+                document.getElementById(id).classList.add('active');
+                this.log(`Target Acquired: ${id}`);
                 
-                this.pushLog(`Linked to Secure Bridge: ${vaultId}`);
+                if (id === 'vault-preston') this.Storage.loadForPreston();
                 
-                if (vaultId === 'vault-preston') {
-                    this.loadStoredBridgeData();
-                }
-
-                // Celebrate Connection
                 confetti({
-                    particleCount: 160,
-                    spread: 80,
-                    origin: { y: 0.65 },
-                    colors: ['#ffffff', '#ff9a9e', '#fdfcfb']
+                    particleCount: 200,
+                    spread: 70,
+                    origin: { y: 0.6 }
                 });
             },
 
-            /**
-             * NARRATIVE ENGINE (Blossom Journey)
-             */
-            startNarrative() {
+            playBlossomStory() {
                 const story = [
-                    "Hi Blossom...",
-                    "Welcome to the Preston Terminal.",
-                    "This space exists only for us.",
-                    "A direct encrypted channel, free from the noise.",
-                    "You are a constant light in the code.",
+                    "Hello Blossom.",
+                    "The Preston Terminal is now fully operational.",
+                    "Every line of this code was written for you.",
+                    "A direct frequency, shielded and silent.",
+                    "You are the anchor in my digital world.",
                     "Thank you for being you. 🌸"
                 ];
-
-                const btn = document.getElementById('init-narrative-btn');
-                const consoleText = document.getElementById('narrative-console');
-                const audio = document.getElementById('terminal-ambient');
-
-                btn.style.display = 'none';
-                audio.volume = 0.3;
-                audio.play();
-
-                const typeNextLine = () => {
-                    if (this.state.narrativeIndex < story.length) {
-                        consoleText.style.opacity = 0;
+                
+                document.getElementById('start-story-btn').style.display = 'none';
+                document.getElementById('os-ambient').play();
+                
+                let i = 0;
+                const next = () => {
+                    const display = document.getElementById('narrative-display');
+                    if (i < story.length) {
+                        display.style.opacity = 0;
                         setTimeout(() => {
-                            consoleText.innerText = story[this.state.narrativeIndex];
-                            consoleText.style.opacity = 1;
-                            this.state.narrativeIndex++;
-                            setTimeout(typeNextLine, 3800);
+                            display.innerText = story[i];
+                            display.style.opacity = 1;
+                            i++;
+                            setTimeout(next, 3800);
                         }, 800);
                     } else {
-                        consoleText.innerHTML = "<span class='blossom-script'>The floor is yours.</span>";
-                        document.getElementById('blossom-active-interface').classList.remove('hidden');
+                        display.innerHTML = "<span class='cursive-header'>Session Open.</span>";
+                        document.getElementById('blossom-active-ui').classList.remove('hidden');
                         
-                        // Check for incoming data
-                        const incoming = localStorage.getItem('him_msg');
-                        if (incoming) {
-                            document.getElementById('remote-transmission').classList.remove('hidden');
-                            document.getElementById('transmission-text').innerText = `"${incoming}"`;
+                        // Load Preston's last message for her
+                        const pm = localStorage.getItem('preston_txt');
+                        const pa = localStorage.getItem('preston_aud');
+                        if (pm) {
+                            document.getElementById('incoming-transmission').classList.remove('hidden');
+                            document.getElementById('preston-text-out').innerText = `"${pm}"`;
+                            if(pa) {
+                                document.getElementById('preston-audio-out-box').classList.remove('hidden');
+                                document.getElementById('preston-audio-playback').src = pa;
+                            }
                         }
-
-                        this.initSignatureCanvas();
+                        
+                        this.Signature.setup('sig-pad-blossom');
                     }
                 };
-                typeNextLine();
-            },
-
-            /**
-             * SIGNATURE ARCHITECTURE
-             */
-            initSignatureCanvas() {
-                const canvas = document.getElementById('sig-surface');
-                const ctx = canvas.getContext('2d');
-                
-                const resize = () => {
-                    canvas.width = canvas.offsetWidth;
-                    canvas.height = canvas.offsetHeight;
-                };
-                resize();
-
-                let isDrawing = false;
-                const getCoords = (e) => {
-                    const rect = canvas.getBoundingClientRect();
-                    return {
-                        x: (e.clientX || e.touches[0].clientX) - rect.left,
-                        y: (e.clientY || e.touches[0].clientY) - rect.top
-                    };
-                };
-
-                const startDraw = (e) => {
-                    isDrawing = true;
-                    ctx.beginPath();
-                    const p = getCoords(e);
-                    ctx.moveTo(p.x, p.y);
-                };
-
-                const drawing = (e) => {
-                    if (!isDrawing) return;
-                    const p = getCoords(e);
-                    ctx.lineTo(p.x, p.y);
-                    ctx.strokeStyle = "#111111";
-                    ctx.lineWidth = 3.5;
-                    ctx.lineCap = "round";
-                    ctx.lineJoin = "round";
-                    ctx.stroke();
-                };
-
-                const stopDraw = () => isDrawing = false;
-
-                canvas.addEventListener('mousedown', startDraw);
-                canvas.addEventListener('touchstart', startDraw);
-                window.addEventListener('mousemove', drawing);
-                window.addEventListener('touchmove', drawing);
-                window.addEventListener('mouseup', stopDraw);
-                window.addEventListener('touchend', stopDraw);
-            },
-
-            /**
-             * DATA PERSISTENCE LAYER
-             */
-            synchronize(key, inputId) {
-                const data = document.getElementById(inputId).value;
-                if (!data) return alert("System requires a frequency input.");
-
-                localStorage.setItem(key, data);
-                
-                if (key === 'blossom_msg') {
-                    const signatureData = document.getElementById('sig-surface').toDataURL();
-                    localStorage.setItem('blossom_sig_node', signatureData);
-                }
-
-                this.pushLog(`Synchronizing frequency: [${key}]`);
-                
-                confetti({
-                    particleCount: 100,
-                    scalar: 0.85,
-                    origin: { y: 0.8 }
-                });
-
-                alert("Terminal Synchronized. Data Transmitted.");
-            },
-
-            loadStoredBridgeData() {
-                const message = localStorage.getItem('blossom_msg');
-                const signature = localStorage.getItem('blossom_sig_node');
-                const myLast = localStorage.getItem('him_msg');
-
-                if (message) {
-                    document.getElementById('bridge-data-output').innerText = `"${message}"`;
-                }
-                
-                if (signature) {
-                    const playback = document.getElementById('sig-playback-node');
-                    playback.src = signature;
-                    playback.style.display = 'block';
-                }
-
-                if (myLast) {
-                    document.getElementById('preston-push-data').value = myLast;
-                }
+                next();
             }
         };
 
-        /**
-         * BOOT KERNEL
-         */
-        window.addEventListener('load', () => Controller.init());
-        document.getElementById('init-narrative-btn').onclick = () => Controller.startNarrative();
+        // SYSTEM BOOT
+        window.onload = () => TerminalOS.boot();
+        document.getElementById('start-story-btn').onclick = () => TerminalOS.playBlossomStory();
 
     </script>
 </body>
