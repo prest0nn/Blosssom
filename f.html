@@ -2,132 +2,745 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pepsi | Refresh Your World</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Preston hates blossom👉🏻</title>
+    
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
     
     <style>
+       
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700;800&family=JetBrains+Mono:wght@400&display=swap');
+
         :root {
-            --pepsi-blue: #005cb4;
-            --pepsi-red: #ef3340;
+            /* COLOR TOKENS (OKLCH for superior gradients) 
+            */
+            --accent: oklch(75% 0.18 350);
+            --accent-mute: oklch(75% 0.18 350 / 0.15);
+            --bg-deep: oklch(5% 0.01 260);
+            --bg-glass: oklch(100% 0 0 / 0.04);
+            --border-glow: oklch(100% 0 0 / 0.15);
+            --text-primary: oklch(98% 0.01 260);
+            --text-dim: oklch(60% 0.02 260);
+            
+            /* MOTION TOKENS 
+            */
+            --ease-fluid: cubic-bezier(0.19, 1, 0.22, 1);
+            --transition-speed: 0.8s;
+            
+            /* RESPONSIVE SPACING 
+            */
+            --safe-area: 20px;
+        }
+
+        /* -------------------------------------------------------------------------
+           1. CORE RESET & RESPONSIVE FOUNDATION
+           ------------------------------------------------------------------------- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            outline: none !important;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            height: -webkit-fill-available; /* Fix for mobile browser bars */
+            background-color: var(--bg-deep);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow: hidden;
+            color: var(--text-primary);
+            user-select: none;
+            touch-action: manipulation;
         }
 
         body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Arial Black', sans-serif;
-            background-color: #000;
-            color: white;
-            overflow-x: hidden;
-        }
-
-        section {
-            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            position: relative;
-            text-align: center;
+            padding: var(--safe-area);
         }
 
-        .hero { background: var(--pepsi-blue); }
-        .feature { background: #fff; color: #333; }
-        .footer { background: var(--pepsi-red); }
-
-        .title {
-            font-size: 8vw;
-            text-transform: uppercase;
-            z-index: 2;
-        }
-
-        /* The Animated Image Container */
-        .image-container {
+        /* -------------------------------------------------------------------------
+           2. SYSTEM BACKGROUND ENGINE (PARTICLE NEURAL NET)
+           ------------------------------------------------------------------------- */
+        #particle-engine {
             position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 300px;
-            z-index: 5;
-            pointer-events: none; /* Let clicks pass through to buttons */
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            opacity: 0.4;
         }
 
-        .pepsi-can {
+        #fluid-spotlight {
+            position: fixed;
+            inset: 0;
+            z-index: 2;
+            pointer-events: none;
+            background: radial-gradient(
+                circle 400px at var(--mx, 50%) var(--my, 50%),
+                var(--accent-mute),
+                transparent 80%
+            );
+        }
+
+        /* -------------------------------------------------------------------------
+           3. TERMINAL DIAGNOSTIC LOGS
+           ------------------------------------------------------------------------- */
+        .diag-terminal {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: clamp(0.5rem, 2vw, 0.65rem);
+            color: var(--accent);
+            z-index: 999;
+            opacity: 0.7;
+            pointer-events: none;
+            line-height: 1.5;
+            max-width: 80vw;
+        }
+
+        #scanning-laser {
+            position: fixed;
+            top: -10px;
+            left: 0;
             width: 100%;
-            filter: drop-shadow(0 20px 30px rgba(0,0,0,0.3));
+            height: 3px;
+            background: var(--accent);
+            box-shadow: 0 0 25px var(--accent);
+            z-index: 1001;
+            display: none;
         }
 
-        .scroll-hint {
-            position: absolute;
-            bottom: 30px;
-            font-size: 0.9rem;
-            letter-spacing: 2px;
-            opacity: 0.6;
+        /* -------------------------------------------------------------------------
+           4. AUTHENTICATION (GATEWAY)
+           ------------------------------------------------------------------------- */
+        .gate-wrapper {
+            position: fixed;
+            inset: 0;
+            z-index: 900;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: var(--bg-deep);
+            transition: transform 1.8s var(--ease-fluid), opacity 1.2s ease;
+            padding: var(--safe-area);
         }
+
+        .auth-card {
+            background: var(--bg-glass);
+            backdrop-filter: blur(80px);
+            -webkit-backdrop-filter: blur(80px);
+            border: 1px solid var(--border-glow);
+            border-radius: clamp(30px, 10vw, 60px);
+            padding: clamp(2rem, 8vw, 5rem);
+            width: min(100%, 480px);
+            text-align: center;
+            box-shadow: 0 40px 80px -20px rgba(0,0,0,0.8);
+            position: relative;
+        }
+
+        .auth-label {
+            display: block;
+            font-size: clamp(0.6rem, 2vw, 0.75rem);
+            letter-spacing: 6px;
+            color: var(--accent);
+            text-transform: uppercase;
+            font-weight: 800;
+            margin-bottom: 2rem;
+        }
+
+        .pin-field {
+            all: unset;
+            width: 100%;
+            font-size: clamp(3rem, 12vw, 5rem);
+            letter-spacing: clamp(15px, 5vw, 25px);
+            font-weight: 800;
+            text-align: center;
+            border-bottom: 2px solid var(--border-glow);
+            padding-bottom: 10px;
+            transition: border-color 0.4s;
+        }
+
+        .pin-field:focus {
+            border-color: var(--accent);
+        }
+
+        /* -------------------------------------------------------------------------
+           5. RESPONSIVE VAULT CONTAINERS
+           ------------------------------------------------------------------------- */
+        .vault-viewport {
+            position: relative;
+            z-index: 100;
+            width: min(100%, 600px);
+            display: none;
+            opacity: 0;
+            transform: translateY(30px);
+            height: 90vh;
+            overflow-y: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            padding-bottom: 40px;
+        }
+
+        .vault-viewport::-webkit-scrollbar { display: none; }
+
+        .vault-viewport.visible {
+            display: block;
+            animation: slideUp 1.2s var(--ease-fluid) forwards;
+        }
+
+        @keyframes slideUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .panel-glass {
+            background: var(--bg-glass);
+            backdrop-filter: blur(50px);
+            -webkit-backdrop-filter: blur(50px);
+            border: 1px solid var(--border-glow);
+            border-radius: clamp(24px, 6vw, 40px);
+            padding: clamp(1.5rem, 5vw, 3rem);
+            margin-bottom: 1.5rem;
+        }
+
+        /* -------------------------------------------------------------------------
+           6. SONIC & VISUAL ELEMENTS
+           ------------------------------------------------------------------------- */
+        #narration-box {
+            min-height: 220px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: clamp(1.2rem, 4vw, 1.7rem);
+            font-weight: 200;
+            line-height: 1.6;
+            padding: 10px;
+        }
+
+        .script-text {
+            font-family: 'Dancing Script', cursive;
+            font-size: clamp(2.5rem, 8vw, 3.5rem);
+            color: var(--accent);
+        }
+
+        .btn-action {
+            all: unset;
+            display: block;
+            width: 100%;
+            padding: 1.2rem 0;
+            background: var(--text-primary);
+            color: var(--bg-deep);
+            border-radius: 20px;
+            font-weight: 800;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.4s;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.8rem;
+            margin-top: 1.5rem;
+        }
+
+        .btn-action:active { transform: scale(0.96); }
+
+        .btn-action.ghost {
+            background: transparent;
+            color: var(--text-primary);
+            border: 1px solid var(--border-glow);
+        }
+
+        .btn-action.active-rec {
+            background: #ff4b2b;
+            color: white;
+            animation: pulse-rec 1s infinite;
+        }
+
+        @keyframes pulse-rec {
+            50% { opacity: 0.6; }
+        }
+
+        .sig-canvas {
+            background: #ffffff;
+            width: 100%;
+            height: clamp(180px, 40vw, 240px);
+            border-radius: 24px;
+            touch-action: none;
+            margin: 1.5rem 0;
+        }
+
+        .text-input-premium {
+            width: 100%;
+            height: 120px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-glow);
+            border-radius: 20px;
+            padding: 1.2rem;
+            color: var(--text-primary);
+            font-family: inherit;
+            resize: none;
+            font-size: 1rem;
+        }
+
+        /* -------------------------------------------------------------------------
+           7. RESPONSIVE GRID NODES
+           ------------------------------------------------------------------------- */
+        .node-card {
+            background: rgba(0,0,0,0.3);
+            border: 1px solid var(--border-glow);
+            border-radius: 28px;
+            padding: 20px;
+            margin-bottom: 1rem;
+        }
+
+        .node-header {
+            font-size: 0.6rem;
+            font-weight: 800;
+            color: var(--accent);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        /* -------------------------------------------------------------------------
+           8. SYSTEM ANIMATIONS
+           ------------------------------------------------------------------------- */
+        @keyframes laser-sweep {
+            0% { top: 0%; opacity: 1; }
+            100% { top: 100%; opacity: 0; }
+        }
+
+        .vibrate { animation: shake 0.12s linear infinite; }
+        @keyframes shake {
+            0% { transform: translate(1px, 1px); }
+            50% { transform: translate(-1px, -1px); }
+            100% { transform: translate(1px, -1px); }
+        }
+
+        .hidden { display: none !important; }
+
     </style>
 </head>
 <body>
 
-    <div class="image-container">
-        <img src="https://www.pepsi.com/en-us/assets/images/can-pepsi.png" alt="Pepsi Can" class="pepsi-can" id="can">
+    <canvas id="particle-engine"></canvas>
+    <div id="fluid-spotlight"></div>
+    <div id="scanning-laser"></div>
+    
+    <div class="diag-terminal" id="sys-logs">
+        [ PRESTON PRIME v5.0.2 ]<br>
+        [ KERNEL: RESPONSIVE_CORE ]<br>
+        [ STATUS: WAITING_FOR_PIN ]
     </div>
 
-    <section class="hero">
-        <h1 class="title">REELAW</h1>
-        <div class="scroll-hint">SCROLL DOWN</div>
-    </section>
+    <div class="gate-wrapper" id="auth-gate">
+        <div class="auth-card" id="gate-panel">
+            <span class="auth-label" id="greet-label">Security Protocol</span>
+            <input type="password" class="pin-field" id="pin-input" maxlength="4" placeholder="••••" inputmode="numeric" autofocus>
+            <p style="font-size: 0.55rem; color: var(--text-dim); margin-top: 2.5rem; letter-spacing: 4px;">
+                SECURE BRIDGE FOR PRESTON & BLOSSOM 🦾
+            </p>
+        </div>
+    </div>
 
-    <section class="feature">
-        <h1 class="title" style="color: var(--pepsi-blue);">ZERO SUGAR</h1>
-    </section>
+    <audio id="bg-audio" loop><source src="https://cdn.pixabay.com/audio/2022/05/27/audio_1808f3030c.mp3" type="audio/mpeg"></audio>
 
-    <section class="footer">
-        <h1 class="title">MAX TASTE</h1>
-    </section>
+    <div class="vault-viewport" id="vault-2025">
+        <div class="panel-glass">
+            <div id="narration-box">Establishing Encrypted Link...<br>Please standby for handshake.</div>
+            <button class="btn-action" id="start-btn">Initiate Connection</button>
+            
+            <div id="blossom-ui" class="hidden">
+                <div id="inbox-node" class="node-card hidden" style="border-color: var(--accent);">
+                    <span class="node-header">Frequency from Preston</span>
+                    <p id="inbox-text" style="font-style: italic; line-height: 1.5;"></p>
+                    <div id="inbox-audio-box" class="hidden" style="margin-top: 12px;">
+                        <audio id="inbox-audio" controls style="width: 100%; filter: invert(1);"></audio>
+                    </div>
+                </div>
+
+                <span class="node-header">Signature Authenticator</span>
+                <canvas id="sig-pad-2025" class="sig-canvas"></canvas>
+                
+                <span class="node-header">Voice Frequency Record</span>
+                <button class="btn-action ghost" id="rec-btn-2025" onclick="Kernel.Voice.toggle('2025')">🎙️ Hold to Speak</button>
+                <div id="preview-2025" class="hidden" style="margin-top: 10px;">
+                    <audio id="audio-preview-2025" controls style="width: 100%; filter: invert(1);"></audio>
+                </div>
+
+                <span class="node-header">Text Frequency Update</span>
+                <textarea class="text-input-premium" id="text-2025" placeholder="Your message to Preston..."></textarea>
+                
+                <button class="btn-action" style="background: var(--accent);" onclick="Kernel.Data.commit('2025')">Transmit & Close ❤️</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="vault-viewport" id="vault-2026">
+        <div class="panel-glass">
+            <h1 class="script-text" style="margin-bottom: 1.5rem;">Bridge Master</h1>
+            
+            <div class="node-card">
+                <span class="node-header">Incoming from Blossom</span>
+                <p id="view-text-blossom" style="font-style: italic; opacity: 0.8;">No signal found.</p>
+                <img id="view-sig-blossom" style="width: 100%; border-radius: 18px; background: white; padding: 12px; display: none; margin-top: 15px;">
+                <div id="view-audio-blossom" class="hidden" style="margin-top: 15px;">
+                    <audio id="audio-play-blossom" controls style="width: 100%; filter: invert(1);"></audio>
+                </div>
+            </div>
+
+            <div class="node-card">
+                <span class="node-header">Broadcast New Frequency</span>
+                <button class="btn-action ghost" id="rec-btn-2026" onclick="Kernel.Voice.toggle('2026')">🎙️ Record Voice Note</button>
+                <div id="preview-2026" class="hidden" style="margin-top: 10px;">
+                    <audio id="audio-preview-2026" controls style="width: 100%; filter: invert(1);"></audio>
+                </div>
+                <textarea class="text-input-premium" id="text-2026" style="margin-top: 15px;" placeholder="What should she see next?"></textarea>
+                <button class="btn-action" style="background: var(--accent);" onclick="Kernel.Data.commit('2026')">Update Terminal</button>
+            </div>
+
+            <button class="btn-action ghost" onclick="location.reload()">Kill Frequency</button>
+        </div>
+    </div>
 
     <script>
-        // Register the ScrollTrigger plugin
-        gsap.registerPlugin(ScrollTrigger);
+        /**
+         * KERNEL SYSTEM ARCHITECTURE
+         * A high-performance, responsive terminal management system.
+         */
+        const Kernel = {
+            
+            settings: {
+                logs: [],
+                keys: { a: "2025", b: "2026" }
+            },
 
-        // 1. Initial State (Hide the can slightly or set its starting scale)
-        gsap.set("#can", { scale: 0.8, rotation: -15 });
+            status: {
+                auth: false,
+                currentVault: null,
+                isMobile: /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
+            },
 
-        // 2. The Main Scroll Animation
-        const tl = gsap.timeline({
-            scrollTrigger: {
-                trigger: "body",
-                start: "top top",
-                end: "bottom bottom",
-                scrub: 1, // '1' makes the animation "catch up" to the scroll for smoothness
-            }
-        });
+            /**
+             * 1. BOOT SEQUENCE
+             */
+            boot() {
+                this.log("Initializing Hardware...");
+                this.Graphics.start();
+                this.Voice.init();
+                this.updateClock();
+                this.bindInputs();
+                
+                // Track mouse/touch for spotlight effect
+                const handleMove = (e) => {
+                    const x = e.clientX || (e.touches ? e.touches[0].clientX : 0);
+                    const y = e.clientY || (e.touches ? e.touches[0].clientY : 0);
+                    document.body.style.setProperty('--mx', `${x}px`);
+                    document.body.style.setProperty('--my', `${y}px`);
+                };
+                window.addEventListener('mousemove', handleMove);
+                window.addEventListener('touchstart', handleMove);
+                
+                this.log("Preston Terminal: Prime Online.");
+            },
 
-        tl.to("#can", {
-            rotation: 360,     // Rotate the can as we scroll
-            scale: 1.2,       // Zoom in slightly
-            y: 50,            // Move it down a bit
-            duration: 1
-        })
-        .to("#can", {
-            rotation: 720,    // Spin it more for the final section
-            x: 200,           // Slide it to the side
-            scale: 0.9,
-            duration: 1
-        });
+            /**
+             * 2. LOGGING ENGINE
+             */
+            log(msg) {
+                const el = document.getElementById('sys-logs');
+                const timestamp = new Date().toLocaleTimeString();
+                this.settings.logs.push(`[${timestamp}] ${msg}`);
+                if (this.settings.logs.length > 5) this.settings.logs.shift();
+                el.innerHTML = this.settings.logs.join('<br>');
+            },
 
-        // 3. Optional: Smoothly fade titles in as they appear
-        gsap.utils.toArray(".title").forEach(title => {
-            gsap.from(title, {
-                scrollTrigger: {
-                    trigger: title,
-                    start: "top 80%",
-                    toggleActions: "play none none reverse"
+            updateClock() {
+                const hour = new Date().getHours();
+                const greet = document.getElementById('greet-label');
+                if(hour < 12) greet.innerText = "Morning, Blossom";
+                else if(hour < 18) greet.innerText = "Afternoon, Blossom";
+                else greet.innerText = "Evening, Blossom";
+            },
+
+            /**
+             * 3. GRAPHICS MODULE (Responsive Particle Web)
+             */
+            Graphics: {
+                canvas: null,
+                ctx: null,
+                points: [],
+
+                start() {
+                    this.canvas = document.getElementById('particle-engine');
+                    this.ctx = this.canvas.getContext('2d');
+                    this.resize();
+                    window.addEventListener('resize', () => this.resize());
+                    
+                    const count = Kernel.status.isMobile ? 40 : 80;
+                    for(let i=0; i<count; i++) this.points.push(this.newPoint());
+                    this.loop();
                 },
-                opacity: 0,
-                y: 50,
-                duration: 1
-            });
-        });
+
+                resize() {
+                    this.canvas.width = window.innerWidth;
+                    this.canvas.height = window.innerHeight;
+                },
+
+                newPoint() {
+                    return {
+                        x: Math.random() * window.innerWidth,
+                        y: Math.random() * window.innerHeight,
+                        vx: (Math.random() - 0.5) * 0.5,
+                        vy: (Math.random() - 0.5) * 0.5
+                    };
+                },
+
+                loop() {
+                    this.ctx.clearRect(0,0,this.canvas.width,this.canvas.height);
+                    this.points.forEach((p, i) => {
+                        p.x += p.vx; p.y += p.vy;
+                        if(p.x<0 || p.x>this.canvas.width) p.vx*=-1;
+                        if(p.y<0 || p.y>this.canvas.height) p.vy*=-1;
+                        
+                        this.ctx.beginPath();
+                        this.ctx.arc(p.x, p.y, 1, 0, Math.PI*2);
+                        this.ctx.fillStyle = "rgba(255,255,255,0.2)";
+                        this.ctx.fill();
+
+                        for(let j=i+1; j<this.points.length; j++) {
+                            const p2 = this.points[j];
+                            const dist = Math.hypot(p.x-p2.x, p.y-p2.y);
+                            if(dist < 150) {
+                                this.ctx.beginPath();
+                                this.ctx.moveTo(p.x, p.y);
+                                this.ctx.lineTo(p2.x, p2.y);
+                                this.ctx.strokeStyle = `rgba(255,255,255,${0.1 * (1 - dist/150)})`;
+                                this.ctx.stroke();
+                            }
+                        }
+                    });
+                    requestAnimationFrame(() => this.loop());
+                }
+            },
+
+            /**
+             * 4. VOICE REPRODUCTION MODULE
+             */
+            Voice: {
+                recorder: null,
+                chunks: [],
+                activeData: null,
+
+                async init() {
+                    try {
+                        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                        this.recorder = new MediaRecorder(stream);
+                        this.recorder.ondataavailable = (e) => this.chunks.push(e.data);
+                        this.recorder.onstop = () => this.save();
+                        Kernel.log("Sonic Sensors Ready.");
+                    } catch (e) {
+                        Kernel.log("Mic Permission Denied.");
+                    }
+                },
+
+                toggle(user) {
+                    if (this.recorder.state === "inactive") {
+                        this.chunks = [];
+                        this.recorder.start();
+                        document.getElementById(`rec-btn-${user}`).innerText = "🛑 Recording...";
+                        document.getElementById(`rec-btn-${user}`).classList.add('active-rec');
+                        Kernel.log("Streaming voice to buffer...");
+                    } else {
+                        this.recorder.stop();
+                        document.getElementById(`rec-btn-${user}`).innerText = "🎙️ Record New Note";
+                        document.getElementById(`rec-btn-${user}`).classList.remove('active-rec');
+                    }
+                },
+
+                save() {
+                    const blob = new Blob(this.chunks, { type: 'audio/ogg; codecs=opus' });
+                    const reader = new FileReader();
+                    reader.readAsDataURL(blob);
+                    reader.onloadend = () => {
+                        this.activeData = reader.result;
+                        const preview = Kernel.status.currentVault === 'vault-2025' ? 'audio-preview-2025' : 'audio-preview-2026';
+                        const box = Kernel.status.currentVault === 'vault-2025' ? 'preview-2025' : 'preview-2026';
+                        document.getElementById(preview).src = this.activeData;
+                        document.getElementById(box).classList.remove('hidden');
+                        Kernel.log("Sonic Data Encrypted.");
+                    };
+                }
+            },
+
+            /**
+             * 5. DATA MANAGEMENT MODULE
+             */
+            Data: {
+                commit(role) {
+                    const prefix = role === '2025' ? 'blossom' : 'preston';
+                    const text = document.getElementById(`text-${role}`).value;
+                    
+                    if(!text && !Kernel.Voice.activeData) return alert("System requires frequency input.");
+
+                    localStorage.setItem(`${prefix}_msg`, text);
+                    if(Kernel.Voice.activeData) localStorage.setItem(`${prefix}_aud`, Kernel.Voice.activeData);
+                    
+                    if(role === '2025') {
+                        const sig = document.getElementById('sig-pad-2025').toDataURL();
+                        localStorage.setItem('blossom_sig', sig);
+                    }
+
+                    Kernel.log("Frequency Synced.");
+                    confetti({ particleCount: 150 });
+                    alert("Handshake Complete.");
+                },
+
+                loadBridge() {
+                    const msg = localStorage.getItem('blossom_msg');
+                    const sig = localStorage.getItem('blossom_sig');
+                    const aud = localStorage.getItem('blossom_aud');
+
+                    if(msg) document.getElementById('view-text-blossom').innerText = `"${msg}"`;
+                    if(sig) {
+                        const img = document.getElementById('view-sig-blossom');
+                        img.src = sig; img.style.display = 'block';
+                    }
+                    if(aud) {
+                        document.getElementById('view-audio-blossom').classList.remove('hidden');
+                        document.getElementById('audio-play-blossom').src = aud;
+                    }
+                    document.getElementById('text-2026').value = localStorage.getItem('preston_msg') || "";
+                }
+            },
+
+            /**
+             * 6. INTERFACE BINDINGS
+             */
+            bindInputs() {
+                document.getElementById('pin-input').addEventListener('input', (e) => {
+                    const val = e.target.value;
+                    if (val === this.settings.keys.a || val === this.settings.keys.b) {
+                        this.authorize(val);
+                    }
+                });
+            },
+
+            authorize(key) {
+                this.status.auth = true;
+                this.log(`Handshake: Success [${key}]`);
+                
+                const laser = document.getElementById('scanning-laser');
+                const panel = document.getElementById('gate-panel');
+                
+                laser.style.display = 'block';
+                laser.style.animation = 'laser-sweep 1.6s forwards';
+                panel.classList.add('vibrate');
+
+                setTimeout(() => {
+                    document.getElementById('auth-gate').style.opacity = '0';
+                    document.getElementById('auth-gate').style.transform = 'translateY(-100%)';
+                    
+                    setTimeout(() => {
+                        const targetId = key === '2025' ? 'vault-2025' : 'vault-2026';
+                        this.status.currentVault = targetId;
+                        document.getElementById(targetId).classList.add('visible');
+                        if(targetId === 'vault-2026') this.Data.loadBridge();
+                        confetti({ particleCount: 200, spread: 70 });
+                    }, 800);
+                }, 1600);
+            },
+
+            /**
+             * 7. NARRATIVE SCRIPT
+             */
+            runBlossomSequence() {
+                const script = [
+                    "Hello Blossom.",
+                    "I don’t always say it, but I appreciate you more than you probably know.",
+                    "Life gets messy, but it’s easier with people like you around.",
+                    "I built this code to last forever.",
+                    "You’re genuinely a good person… and that’s rare.",
+                    "Sometimes I think about how random life is… and how lucky I got meeting you.",
+                    "Not everything has to be said out loud, but this felt worth saying.",
+                    "I’m really glad we crossed paths. 🥲",
+                    "You’re stuck with me, whether you like it or not. 🫂",
+                    "Thank you for being you. 🌸",
+                    "I made my self look like a sad NERD gng, (HOPE U WOULD LIKE IT)"
+                ];
+                
+                document.getElementById('start-btn').style.display = 'none';
+                document.getElementById('bg-audio').play();
+                
+                let idx = 0;
+                const nextStep = () => {
+                    const box = document.getElementById('narration-box');
+                    if (idx < script.length) {
+                        box.style.opacity = 0;
+                        setTimeout(() => {
+                            box.innerText = script[idx];
+                            box.style.opacity = 1;
+                            idx++;
+                            setTimeout(nextStep, 3500);
+                        }, 800);
+                    } else {
+                        box.innerHTML = "<span class='script-text'>Link Active.</span>";
+                        document.getElementById('blossom-ui').classList.remove('hidden');
+                        
+                        const pMsg = localStorage.getItem('preston_msg');
+                        const pAud = localStorage.getItem('preston_aud');
+                        if (pMsg) {
+                            document.getElementById('inbox-node').classList.remove('hidden');
+                            document.getElementById('inbox-text').innerText = `"${pMsg}"`;
+                            if(pAud) {
+                                document.getElementById('inbox-audio-box').classList.remove('hidden');
+                                document.getElementById('inbox-audio').src = pAud;
+                            }
+                        }
+                        this.initSig('sig-pad-2025');
+                    }
+                };
+                nextStep();
+            },
+
+            initSig(id) {
+                const canvas = document.getElementById(id);
+                const ctx = canvas.getContext('2d');
+                canvas.width = canvas.offsetWidth;
+                canvas.height = canvas.offsetHeight;
+                
+                let drawing = false;
+                const getP = (e) => {
+                    const r = canvas.getBoundingClientRect();
+                    return { 
+                        x: (e.clientX || (e.touches ? e.touches[0].clientX : 0)) - r.left, 
+                        y: (e.clientY || (e.touches ? e.touches[0].clientY : 0)) - r.top 
+                    };
+                };
+
+                const start = (e) => { drawing = true; ctx.beginPath(); const p = getP(e); ctx.moveTo(p.x, p.y); };
+                const move = (e) => { if(!drawing) return; const p = getP(e); ctx.lineTo(p.x, p.y); ctx.strokeStyle = "#000"; ctx.lineWidth = 3; ctx.lineCap = "round"; ctx.stroke(); };
+                const stop = () => drawing = false;
+
+                canvas.addEventListener('mousedown', start);
+                canvas.addEventListener('touchstart', start);
+                window.addEventListener('mousemove', move);
+                window.addEventListener('touchmove', move);
+                window.addEventListener('mouseup', stop);
+                window.addEventListener('touchend', stop);
+            }
+        };
+
+        // STARTUP
+        window.onload = () => Kernel.boot();
+        document.getElementById('start-btn').onclick = () => Kernel.runBlossomSequence();
+
     </script>
 </body>
 </html>
